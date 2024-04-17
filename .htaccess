@@ -1,0 +1,20 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteOptions inherit
+
+RewriteCond %{REQUEST_URI} !public/
+RewriteRule (.*) /public/$1 [L]
+
+</IfModule>
+# Désactiver la mise en cache pour les fichiers HTML
+<FilesMatch "\.html?$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</FilesMatch>
+# Désactiver la mise en cache pour les fichiers JavaScript
+<FilesMatch "\.js$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</FilesMatch>
