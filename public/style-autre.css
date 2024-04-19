@@ -1,0 +1,112 @@
+.pasdelien {
+    text-decoration: none;
+    color: black;
+}
+
+.compte-page {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    color: black;
+}
+
+.compte-header {
+    width: 100%;
+}
+
+.compte-page h1{
+    width: 100%;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.compte-header h1 {
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.compte-header p {
+    text-align: right;
+}
+
+.compte-img {
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+
+.compte-img img {
+    max-width: 40%;
+    align-self: center;
+}
+
+.compte-img p {
+    text-align: center;
+    font-size: 27px;
+    margin-top: 1rem;
+}
+
+.img-param {
+    width: 20px;
+}
+
+.deconnecter-compte {
+    width: 50%;
+    margin: auto;
+    margin-top: 5em;
+    text-align: center;
+}
+
+.compte-btn-div {
+    width: 100%;
+    margin-top: 2em;
+}
+
+.compte-btn-div a, .btn {
+    border: 1px solid gainsboro;
+    border-radius: 4px;
+    margin: 30px;
+    padding: 10px;
+}
+
+.form , .form-new-user{
+    width: 60%;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    margin: auto;
+    margin-top: 3em;
+    padding: 25px;
+}
+
+.form h1 , .form-new-user h1{
+    text-align: center;
+}
+
+.form input {
+    margin-bottom: 30px;
+}
+
+#user div label {
+    width: 100%;
+}
+
+#user div input {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.compte-multi-info {
+    width: 50%;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    margin: auto;
+    padding: 1em;
+}
+
+.table tbody tr th {
+    width: 40%;
+}
+
+.tr-hidden-perso, .tr-hidden-lock {
+    display: none;
+}

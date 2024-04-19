@@ -6,9 +6,11 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -59,6 +61,9 @@ class User
 
     #[ORM\Column]
     private array $roles = [];
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $code_unique = null;
 
     public function __construct()
     {
@@ -259,6 +264,36 @@ class User
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+    }
+
+    public function getSalt()
+    {
+    }
+    
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function getCodeUnique(): ?string
+    {
+        return $this->code_unique;
+    }
+
+    public function setCodeUnique(?string $code_unique): static
+    {
+        $this->code_unique = $code_unique;
 
         return $this;
     }

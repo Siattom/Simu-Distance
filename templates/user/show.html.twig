@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+        
+    <div class="compte-page">
+        <div class="compte-header">
+            <p>
+                <a class="pasdelien" href="/logout">
+                    <img class="img-param" src="../../../image/logout.png" alt="déconnexion">
+                </a>
+            </p>
+            <h1>Compte</h1>
+        </div>
+
+        {% if user == null %}
+            
+            <div class="deconnecter-compte">
+                <p>Connecter vous ou inscrivez vous pour enregistrer vos adresses principales ou votre véhicule </p>
+                    
+                <div class="compte-btn-div">    
+                    <a href="/login" class="pasdelien">Connexion</a>
+                    <a href="/user/new" class="pasdelien">Inscription</a>
+                </div>
+                <div class="compte-btn-div">
+                    <p><a href="https://friwimap.friwigo.com" class="pasdelien">Mot de passe oublié</a></p>
+                </div>
+            </div>
+
+        {% else %}
+            <div class="compte-img">
+                <p> 
+                    {{user.pseudo}} 
+                    
+                </p>
+            </div>
+            <div class="compte-multi-info">
+                <table class="table">
+                    <tbody>
+                        <tr id="show-perso">
+                            <th><img src="../../../image/people.svg" alt="logo personne" /></th>
+                            <td><h4>Informations personnelles</h4></td>
+                        </tr>
+                        <tr class="thp tr-hidden-perso">
+                            <th>Email</th>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        <tr class="thp tr-hidden-perso">
+                            <th>Pseudo</th>
+                            <td>{{ user.pseudo }}</td>
+                        </tr>
+                        <tr class="thp tr-hidden-perso">
+                            <th>Nom</th>
+                            <td>{{ user.nom }}</td>
+                        </tr>
+                        <tr class="thp tr-hidden-perso">
+                            <th>Prenom</th>
+                            <td>{{ user.prenom }}</td>
+                        </tr>
+                        <tr class="thp tr-hidden-perso">
+                            <th>Telephone</th>
+                            <td>{{ user.telephone }}</td>
+                        </tr>
+                        <tr class="thp tr-hidden-perso">
+                            <th>Genre</th>
+                            <td>{{ user.genre }}</td>
+                        </tr>
+                        <tr class="thp tr-hidden-perso">
+                            <th>Ville</th>
+                            <td>{{ user.ville }}</td>
+                        </tr>
+                        <tr class="thp tr-hidden-perso">
+                            <th>Pays</th>
+                            <td>{{ user.pays }}</td>
+                        </tr>
+                        <tr class="thp tr-hidden-perso">
+                            <th>Date de naissance</th>
+                            <td>{{ user.dateDeNaissance }}</td>
+                        </tr>
+                        <tr class="thp tr-hidden-perso">
+                            <th></th>
+                            <td><a class="pasdelien" href="{{ path('app_user_edit', {'id': user.id }) }}">Modifier les informations</a></td>
+                        </tr>
+                        <tr id="show-lock">
+                            <th><img src="../../../image/lock.svg" alt="logo cadena"/></th>
+                            <td><h4>Mot de passe</h4></td>
+                        </tr>
+                        <tr class="thl tr-hidden-lock">
+                            <th></th>
+                            <td><p><a href="https://friwimap.friwigo.com" class="pasdelien">Modifier le mot de passe</a></p></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        {% endif%}
+    
+    </div>
+
+
+{% endblock %}

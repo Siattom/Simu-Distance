@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <title>FRIWIMAP</title>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="https://kit.fontawesome.com/ab2155e76b.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" />
+    <link href="style-autre.css" rel="stylesheet" />
+    <link href="nav.css" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="image/charging.jpg">
+</head>
+
+<body>
+    {{ include('nav.html.twig') }}
+    <div class="jumbotron">
+        {#<div class="nav">
+            <img class="logo" src="image/Logo.png" alt="Logo FRIWIMAP" />
+            <h1>Calculer la distance de votre trajet.</h1>
+        </div>#}
+
+
+
+        <div class="container-fluid-1">
+            <div id="filtre-carte" class="form-group">
+                <button class="value" onclick="toggleActive(this)">
+                    <i class="fa fa-map"></i>&nbsp; Recharge rapide
+                </button>
+            </div>
+            <div id="filtre-carte2" class="form-group">
+                <button class="value" onclick="toggleActiveSlow(this)">
+                    <i class="fa fa-map"></i>&nbsp; Recharge classique
+                </button>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+                <div id="output-error">
+                <div id="googleMap">
+
+            </div>
+                <div id="output">
+            </div>
+        </div>
+        <!--        <div class="contairer-fluid">
+            <iframe src="https://map.openchargemap.io/?mode=embedded" allow="geolocation" frameborder="0" width="100%" height="500px"></iframe>
+        </div> -->
+        <!-- <button><a href="/user/show/menu">S'inscrire</a></button> -->
+    </div>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZeMfqzI4a7F3nsoRrGOWGXQC_qAOzshY&libraries=places"></script>
+        
+
+    <script src="map.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>

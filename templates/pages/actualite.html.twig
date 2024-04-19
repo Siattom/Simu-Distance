@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+        
+    <div class="compte-page">
+        <h1>Compte</h1>
+
+        {% if user == null %}
+            
+            <div class="deconnecter-compte">
+                <p>Connecter vous ou inscrivez vous pour enregistrer vos adresses principales ou votre véhicule </p>
+                    
+                <div class="compte-btn-div">    
+                    <a href="/login" class="pasdelien">Connexion</a>
+                    <a href="/user/new" class="pasdelien">Inscription</a>
+                </div>
+            </div>
+
+        {% else %}
+            <div class="compte-img">
+                {#<img src="../../../image/travel.jpg" alt="illustration de voyage"/>#}
+                <p>Dans le futur il y aura des publicités</p>
+            </div>
+        
+        {% endif%}
+    
+    </div>
+
+
+{% endblock %}

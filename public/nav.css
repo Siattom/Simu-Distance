@@ -1,0 +1,19 @@
+.nav-banner {
+    display: flex; /* Utilisation de flexbox pour aligner les éléments horizontalement */
+    justify-content: space-between; /* Pour ajouter un espace égal entre les éléments */
+    background-color: ghostwhite;
+}
+
+.nav-banner-div {
+    text-align: center; /* Pour centrer le contenu horizontalement */
+    flex: 1; /* Pour que chaque élément occupe la même largeur */
+    margin-top: 15px;
+}
+
+.img-nav {
+    width: 30px; /* Largeur de l'image */
+}
+
+.nav-banner-div p {
+    margin-top: 5px; /* Espacement entre l
+}    

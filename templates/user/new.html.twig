@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau compte{% endblock %}
+
+{% block body %}
+    <div class="form-new-user">
+        <h1>Créer son compte</h1>
+
+        {% for message in app.flashes('pbLicense') %}
+            <script>
+                alert('{{ message }}')
+            </script>
+        {% endfor %}
+
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn">{{ button_label|default('Soumettre') }}</button>
+        {{ form_end(form) }}
+
+        <a class="pasdelien" href="{{ path('app_user_index') }}">Retour</a>
+    </div>
+{% endblock %}

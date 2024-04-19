@@ -1,0 +1,270 @@
+body {
+  color: #5bc0de;
+  font-family: "Poppins", sans-serif;
+}
+
+.jumbotron {
+  background-color: transparent;
+  margin: 0;
+  padding: 10px;
+}
+
+.jumbotron h1 {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.jumbotron h1,
+.jumbotron p {
+  text-align: center;
+}
+
+.jumbotron p {
+  font-size: 1em;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  position: static;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+  margin-bottom: 3%;
+}
+
+.form-group label.text {
+  font-size: 0.75rem;
+  color: #5bc0de;
+  font-weight: 700;
+  position: relative;
+  top: 0.5rem;
+  margin: 0 0 0 7px;
+  padding: 0 3px;
+  background: #ffffff;
+  width: fit-content;
+}
+
+#googleMap {
+  width: 80%;
+  height: 400px;
+  margin: 20px auto;
+}
+
+.logo {
+  width: 50px;
+  margin-right: 2em;
+}
+
+.nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2em;
+}
+
+.container-fluid-1 {
+  width: 50%;
+  margin: 0 auto;
+  /*margin-bottom: 10%;*/
+}
+
+/*css menu*/
+
+.menu {
+  display: flex;
+  flex-direction: row;
+  background-color: #ffff;
+  justify-content: center;
+  border-radius: 5px;
+  border: 1px solid black;
+  overflow: hidden;
+  margin-bottom: 2em;
+}
+.value {
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+  flex-grow: 1;
+}
+
+.value:not(:active):hover,
+.value:focus {
+  color: #5bc0de;
+  background-color: #eef0f1;
+}
+
+.value:focus,
+.value:active {
+  background-color: #5bc0de;
+  color: black;
+  outline: none;
+}
+.separator {
+  width: 1px;
+  background-color: black;
+}
+
+.value.active {
+  background-color: #5bc0de;
+  color: black;
+}
+/*fin css menu*/
+
+/* css la séparation en panel*/
+.details-hidden {
+  display: none;
+}
+
+.pp {
+  background-color: white;
+}
+hr {
+  border: 1px solid black;
+  margin: 0%;
+}
+
+.panel-header {
+  text-align: center;
+  height: 35px;
+  padding-top: 4px;
+  background-color: rgb(238, 238, 238);
+  border: 1px solid rgb(238, 238, 238);
+}
+
+.panel {
+  border-radius: 7px;
+}
+.mm {
+  padding: 15px;
+  border: 2px solid rgb(238, 238, 238);
+}
+/* fin css séparation en panel */
+
+/* Supprime la bordure de focus */
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  box-shadow: none;
+}
+/* fin Supprime la bordure de focus */
+
+.station-bar {
+  display: flex;
+  justify-content: space-around;
+}
+
+.station {
+  width: 30%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: blue;
+  color: white;
+}
+
+/*css separateur hr>*/
+
+.dotted-line {
+  border-top: 1px dotted black; /* Couleur et style des points */
+  width: 70%; /* Largeur de la ligne */
+  margin: 15px auto; /* Marge supérieure et inférieure pour l'espacement */
+  
+}
+/*fon css separateur hr>*/
+
+/*css cas pourcentage*/
+.form-control-2{
+  width: 70px;
+}
+
+.form-control-hidden {
+  display: none;
+}
+/*css pourcentage h*/
+
+.selected-carte{
+  width: 95%!important;
+  height: 600px!important;
+  margin: 20px auto;
+}
+
+.hidden-filtre {
+  display: none;
+}
+
+.alert-info {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+@media screen and (max-device-width: 800px) {
+  .jumbotron h1 {
+      font-size: 1.8em; /* Taille plus petite pour les écrans étroits */
+  }
+
+  .nav, .menu {
+      flex-direction: column; /* Empiler verticalement sur les petits écrans */
+  }
+
+  .form-group, .container-fluid-1, #googleMap {
+      width: 100%; /* Utiliser toute la largeur disponible */
+  }
+
+  .col-xs-4 input {
+    height: 3em;
+    font-size: 2em;
+  }
+
+  .form-group input, .form-group select {
+    height: 2.7em;
+    font-size: 2em;
+  }
+
+  .form-group label.text {
+      font-size: 1rem; /* Ajuster la taille de la police pour une meilleure lisibilité */
+  }
+
+  .panel, .pp, .mm {
+      padding: 10px; /* Réduire l'espacement pour économiser de l'espace */
+  }
+
+  .panel-header {
+    font-size: 2em;
+    height: 55px;
+  }
+
+  .form-control-2 {
+    width: 15%;
+  }
+
+  .pac-item, .pac-item-query {
+    font-size: 1.4em;
+  }
+
+  .station {
+    height: 5em;
+    font-size: 1.5em;
+  }
+
+  .value {
+    height: 2.5em;
+    font-size: 1.6em;
+  }
+
+  #calculer {
+    height: 2.5em;
+    font-size: 1.4em;
+  }
+}

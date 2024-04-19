@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Oublie de mot de passe{% endblock %}
+
+{% block body %}
+        <div class="main">
+            <h2 class="">Mot de passe oublié</h2>
+            <div class="form">
+            <p>Merci de renseignez votre adresse mail, votre code reçu par mail et votre nouveau mot de passe. </p>
+                {{ form_start(oublieForm) }}
+                        {{ form_row(oublieForm.Email) }}
+                        {{ form_row(oublieForm.code_unique) }}
+                        {{ form_row(oublieForm.password) }}
+                        {{ form_row(oublieForm.Mot_de_passe) }}
+                        <div class="align">
+                            <button type="submit" class="bouton">Enregistrer</button>
+                        </div>
+                {{ form_end(oublieForm) }}
+            </div> 
+        </div>
+{% endblock %}
+ 

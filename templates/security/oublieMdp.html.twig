@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Oublie de mot de passe{% endblock %}
+
+{% block body %}
+        <div class="main">
+            <h2 class="">Mot de passe oublié</h2>
+
+  {% for message in app.flashes('mdp') %}
+      <script>
+          alert('{{ message }}');
+      </script>
+  {% endfor %}
+    {% for message in app.flashes('mail') %}
+      <script>
+          alert('{{ message }}');
+      </script>
+  {% endfor %}
+    {% for message in app.flashes('code') %}
+      <script>
+          alert('{{ message }}');
+      </script>
+  {% endfor %}
+
+            <div class="form">
+            <p>Merci de renseignez votre adresse mail, nous vous enverrons un lien de résiliation de votre mot de passe. </p>
+                {{ form_start(oublieForm) }}
+                        {{ form_row(oublieForm.Email) }}
+                        <div class="align">
+                            <button type="submit" class="bouton">Enregistrer</button>
+                        </div>
+                {{ form_end(oublieForm) }}
+            </div> 
+        </div>
+{% endblock %}
+ 
