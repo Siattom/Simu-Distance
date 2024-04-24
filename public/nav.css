@@ -1,8 +1,14 @@
 .nav-banner {
+    position: fixed; /* Position fixe pour que la barre de navigation reste toujours visible */
+    top: 0; /* Positionner la barre de navigation en haut de la fenêtre */
+    left: 0; /* Positionner la barre de navigation sur le côté gauche de la fenêtre */
+    width: 100%; /* La barre de navigation prendra 100% de la largeur de la fenêtre */
     display: flex; /* Utilisation de flexbox pour aligner les éléments horizontalement */
     justify-content: space-between; /* Pour ajouter un espace égal entre les éléments */
     background-color: ghostwhite;
+    z-index: 9999; /* Pour s'assurer que la barre de navigation apparaît au-dessus des autres éléments */
 }
+
 
 .nav-banner-div {
     text-align: center; /* Pour centrer le contenu horizontalement */
@@ -11,9 +17,10 @@
 }
 
 .img-nav {
-    width: 30px; /* Largeur de l'image */
+    width: 25px; /* Largeur de l'image */
 }
 
 .nav-banner-div p {
-    margin-top: 5px; /* Espacement entre l
+    margin-top: 5px; 
+    font-size: 12px;
 }    

@@ -2,6 +2,7 @@
     
 namespace App\Controller;
 
+use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,14 +22,18 @@ class CoreController extends AbstractController
     }
 
     #[Route('/actualite', name:'app_actu', methods:['GET'])]
-    public function showActu()
+    public function showActu(ArticleRepository $articleRepository)
     {
         $user = $this->getUser();
         if(!$user){
             $user = null;
         }
+
+        $articles = $articleRepository->findAll();
+
         return $this->render('pages/actualite.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'articles' => $articles
         ]);
     }
 }

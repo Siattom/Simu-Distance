@@ -79,8 +79,8 @@
                 // Filter charging points based on selected charge type
                 var filteredChargePoints = data.filter(chargePoint => {
                     return selectedChargeType === 'all' ||
-                        (selectedChargeType === 'normal' && chargePoint.Connections[0] && chargePoint.Connections[0].PowerKW >= 3 && chargePoint.Connections[0].PowerKW <= 43) ||
-                        (selectedChargeType === 'fast' && chargePoint.Connections[0] && chargePoint.Connections[0].PowerKW > 43);
+                        (selectedChargeType === 'normal' && chargePoint.Connections[0] && chargePoint.Connections[0].PowerKW >= 3 && chargePoint.Connections[0].PowerKW <= 22) ||
+                        (selectedChargeType === 'fast' && chargePoint.Connections[0] && chargePoint.Connections[0].PowerKW > 30);
                 });
                 if (selectedChargeType === 'all') {
                     // Filtrer les bornes qui ont des connexions définies

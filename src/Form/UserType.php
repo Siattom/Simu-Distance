@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -39,11 +40,14 @@ class UserType extends AbstractType
             ])
             ->add('ville')
             ->add('pays')
-            ->add('date_de_naissance', null, [
+            ->add('date_de_naissance', BirthdayType::class, [
+                'widget' => 'single_text',
+                'html5' => true,
                 'attr' => [
-                    'placeholder' => '__/__/____'
-                ]
-            ])            
+                    'placeholder' => '__/__/____',
+                    'pattern' => '\d{2}/\d{2}/\d{4}', // Format de date sous forme de regex
+                ],
+            ])         
         ;
     }
 

@@ -5,27 +5,15 @@
 {% block body %}
         
     <div class="compte-page">
-        <h1>Compte</h1>
-
-        {% if user == null %}
-            
-            <div class="deconnecter-compte">
-                <p>Connecter vous ou inscrivez vous pour enregistrer vos adresses principales ou votre véhicule </p>
-                    
-                <div class="compte-btn-div">    
-                    <a href="/login" class="pasdelien">Connexion</a>
-                    <a href="/user/new" class="pasdelien">Inscription</a>
-                </div>
-            </div>
-
-        {% else %}
-            <div class="compte-img">
-                <img src="../../../image/travel.jpg" alt="illustration de voyage"/>
-                <p>Dans le futur il y aura des redirections vers friwigo</p>
-            </div>
-        
-        {% endif%}
-    
+        <h1>Friwigo</h1>
+        <div class="compte-img">
+            <img src="../../../image/electricharge.png" alt="illustration promotionnelle friwigo" class="slide" />
+            <img src="../../../image/chargee.png" alt="illustration promo friwigo" class="slide" style="display: none;" />
+            <img src="../../../image/card.png" alt="illustration de friwigo" class="slide" style="display: none;" />
+        </div>
+         <div class="btn-actu">
+            <button><a class="pasdelien" href="https://dashboard.friwigo.com/login?redirect=/cpo/signup/billing">Commander</a></button>
+        </div>
     </div>
 
 

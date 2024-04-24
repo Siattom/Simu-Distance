@@ -3,30 +3,30 @@
 {% block title %}Mon compte{% endblock %}
 
 {% block body %}
+<div class="main">
         
     <div class="compte-page">
         <h1>Compte</h1>
+        <div class="article-container">
 
-        {% if user == null %}
-            
-            <div class="deconnecter-compte">
-                <p>Connecter vous ou inscrivez vous pour enregistrer vos adresses principales ou votre véhicule </p>
-                    
-                <div class="compte-btn-div">    
-                    <a href="/login" class="pasdelien">Connexion</a>
-                    <a href="/user/new" class="pasdelien">Inscription</a>
+            {% for article in articles %}
+                <div class="article-div">
+                    {#<img src="../../../image/travel.jpg" alt="illustration de voyage"/>#}
+                    <p class="article-titre">{{article.titre}}</p>
+                    {% if article.texte1 is defined %}
+                        <p>{{article.texte1}}</p>
+                    {% endif %}
+                    {% if article.texte2 is defined %}
+                        <p>{{article.texte2}}</p>
+                    {% endif %}
+                    {% if article.url is defined %}
+                        <p><a href="{{article.url}}" target="blank" class="pasdelien">Lien</a></p>
+                    {% endif %}
                 </div>
-            </div>
-
-        {% else %}
-            <div class="compte-img">
-                {#<img src="../../../image/travel.jpg" alt="illustration de voyage"/>#}
-                <p>Dans le futur il y aura des publicités</p>
-            </div>
-        
-        {% endif%}
-    
+            {% endfor %}
+        </div>
     </div>
+</div>
 
 
 {% endblock %}

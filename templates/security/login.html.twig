@@ -3,6 +3,7 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+<div class="main">
     <form method="post" class="form">
         {% if error %}
             <div class="alert alert-danger">Mot de passe ou email incorrect</div>
@@ -39,4 +40,5 @@
             Se connecter
         </button>
     </form>
+</div>
 {% endblock %}

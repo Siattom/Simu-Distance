@@ -3,6 +3,7 @@
 {% block title %}Nouveau compte{% endblock %}
 
 {% block body %}
+<div class="main">
     <div class="form-new-user">
         <h1>Créer son compte</h1>
 
@@ -12,11 +13,25 @@
             </script>
         {% endfor %}
 
-        {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <button class="btn">{{ button_label|default('Soumettre') }}</button>
-        {{ form_end(form) }}
+    {{ form_start(form) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.pseudo) }}
+        <div class="password-field">
+            {{ form_row(form.password) }}
+            <img src="../../../image/eyes.svg" id="eyes-psw" alt="afficher le mot de passe"/>
+        </div>
+        {{ form_row(form.nom) }}
+        {{ form_row(form.prenom) }}
+        {{ form_row(form.telephone) }}
+        {{ form_row(form.genre) }}
+        {{ form_row(form.ville) }}
+        {{ form_row(form.pays) }}
+        {{ form_row(form.date_de_naissance) }}
+        <button class="btn">{{ button_label|default('Soumettre') }}</button>
+    {{ form_end(form) }}
+
 
         <a class="pasdelien" href="{{ path('app_user_index') }}">Retour</a>
     </div>
+</div>
 {% endblock %}

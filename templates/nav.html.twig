@@ -45,4 +45,15 @@
         <p>Compte</p>
     </div>
 
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="nav-banner-div" id="admin">
+            <img 
+                class="img-nav"
+                src="../../../image/admin.svg"
+                alt="administrateur"
+            />
+            <p>Admin</p>
+        </div>
+    {% endif %}
+
 </div>

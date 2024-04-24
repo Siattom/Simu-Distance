@@ -8,6 +8,11 @@
     display: flex;
     flex-wrap: wrap;
     color: black;
+    padding-top: 80px;
+}
+
+.main {
+    padding-top: 80px;
 }
 
 .compte-header {
@@ -36,8 +41,24 @@
 }
 
 .compte-img img {
-    max-width: 40%;
+    max-width: 27%;
+    margin: auto;
     align-self: center;
+}
+
+.btn-actu {
+    width: 100%;
+    text-align: center;
+}
+
+.btn-actu button {
+    border: none;
+    border-radius: 7px;
+    color: #14b6f6;
+}
+
+.btn-actu button a {
+    color: #14B6F6;
 }
 
 .compte-img p {
@@ -82,9 +103,13 @@
     text-align: center;
 }
 
-.form input {
+.form input, .form-new-user input {
     margin-bottom: 30px;
 }
+
+.form-new-user label, .form-new-user input {
+    width: 100%;
+} 
 
 #user div label {
     width: 100%;
@@ -109,4 +134,42 @@
 
 .tr-hidden-perso, .tr-hidden-lock {
     display: none;
+}
+
+.slide {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.password-field {
+    margin-bottom: 10px;
+}
+
+.article-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.article-div {
+    border: 1px solid gray;
+    width: 20%;
+    padding: 10px;
+}
+
+.article-div p {
+    font-size: 14px;
+}
+
+.article-titre {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+@media only screen and (max-width: 800px) {
+
+    .compte-img img {
+        max-width: 90%;
+    }
+
 }
