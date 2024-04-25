@@ -65,10 +65,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $code_unique = null;
 
+    /**
+     * @var Collection<int, Itineraire>
+     */
+    #[ORM\OneToMany(targetEntity: Itineraire::class, mappedBy: 'user')]
+    private Collection $itineraires;
+
     public function __construct()
     {
         $this->adresses = new ArrayCollection();
         $this->articles = new ArrayCollection();
+        $this->itineraires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -294,6 +301,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCodeUnique(?string $code_unique): static
     {
         $this->code_unique = $code_unique;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Itineraire>
+     */
+    public function getItineraires(): Collection
+    {
+        return $this->itineraires;
+    }
+
+    public function addItineraire(Itineraire $itineraire): static
+    {
+        if (!$this->itineraires->contains($itineraire)) {
+            $this->itineraires->add($itineraire);
+            $itineraire->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItineraire(Itineraire $itineraire): static
+    {
+        if ($this->itineraires->removeElement($itineraire)) {
+            // set the owning side to null (unless already changed)
+            if ($itineraire->getUser() === $this) {
+                $itineraire->setUser(null);
+            }
+        }
 
         return $this;
     }

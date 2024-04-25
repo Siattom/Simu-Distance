@@ -210,6 +210,20 @@ hr {
   border-radius: 4px;
 }
 
+#from, .user-to {
+  width: 70%;
+}
+
+#div-from, #div-to {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+#div-from p, #div-to select {
+  width: 30%;
+}
+
 @media screen and (max-device-width: 800px) {
   .jumbotron h1 {
       font-size: 1.8em; /* Taille plus petite pour les écrans étroits */

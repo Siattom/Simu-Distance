@@ -90,6 +90,22 @@
                             <th></th>
                             <td><p><a href="https://friwimap.friwigo.com" class="pasdelien">Modifier le mot de passe</a></p></td>
                         </tr>
+                        <tr id="show-iti">
+                            <th><img src="../../../image/history.svg" alt="logo historique"/></th>
+                            <td><h4>Mes recherches</h4></td>
+                        </tr>
+                        {% for itineraire in itineraires %}
+                            <tr class="thi tr-hidden-iti">
+                                <th>
+                                    {% if itineraire.titre == null %}
+                                        <a class="pasdelien" href="{{ path('app_itineraire_edit', {'id': itineraire.id}) }}">Ajouter un titre</a>
+                                    {% else %}
+                                        <a class="pasdelien" href="{{ path('app_itineraire_edit', {'id': itineraire.id}) }}">{{itineraire.titre}}</a>
+                                    {% endif %}
+                                </th>
+                                <td>{{itineraire.destination}}</td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

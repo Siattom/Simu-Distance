@@ -44,6 +44,20 @@ if(infosPerso){
     });
 }
 
+var infosIti = document.getElementById('show-iti');
+if(infosIti){
+    infosIti.addEventListener('click', function() {
+        var trHiddenPerso = document.querySelectorAll('.thi');
+        trHiddenPerso.forEach(function(element) {
+            if(element.classList == 'thi tr-hidden-iti'){
+                element.classList.remove('tr-hidden-iti');
+            } else {
+                element.classList.add('tr-hidden-iti')
+            }
+        });
+    });
+}
+
 var slides = document.querySelectorAll('.slide');
 if(slides.length > 0){
 

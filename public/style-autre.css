@@ -132,7 +132,7 @@
     width: 40%;
 }
 
-.tr-hidden-perso, .tr-hidden-lock {
+.tr-hidden-perso, .tr-hidden-lock, .tr-hidden-iti {
     display: none;
 }
 
