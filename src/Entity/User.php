@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -44,8 +46,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pays = null;
 
-    #[ORM\Column(length: 11, nullable: true)]
-    private ?string $date_de_naissance = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_de_naissance = null;
 
     /**
      * @var Collection<int, Adresse>
@@ -191,12 +193,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getDateDeNaissance(): ?string
+    public function getDateDeNaissance(): ?DateTime
     {
         return $this->date_de_naissance;
     }
 
-    public function setDateDeNaissance(?string $date_de_naissance): static
+    public function setDateDeNaissance(?DateTime $date_de_naissance): static
     {
         $this->date_de_naissance = $date_de_naissance;
 

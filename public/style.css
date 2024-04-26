@@ -214,10 +214,14 @@ hr {
   width: 70%;
 }
 
-#div-from, #div-to {
+#div-from, #div-to, #div-vehicule {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+}
+
+#div-vehicule select {
+  width: 70%;
 }
 
 #div-from p, #div-to select {

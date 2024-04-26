@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Itineraire;
+use App\Entity\Voiture;
 use App\Form\ItineraireType;
 use App\Repository\ArticleRepository;
 use App\Repository\ItineraireRepository;
+use App\Repository\VoitureRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,19 +24,29 @@ class CoreController extends AbstractController
     }
 
     #[Route('/calc', name:'app_calc', methods:['GET'])]
-    public function formForCalcul(ItineraireRepository $itineraireRepository) {
+    public function formForCalcul(ItineraireRepository $itineraireRepository, VoitureRepository $voitureRepository) {
         $user = $this->getUser();
 
         if($user){
             $id = $user->getId();
             $itineraires = $itineraireRepository->findByUserTitre($id);
+            $voiture = $voitureRepository->findByUserId($id);
+            if(!$voiture){
+                $voiture = [
+                    '0' => null
+                ];
+            }
         } else {
             $itineraires = null;
+            $voiture = [
+                '0' => null
+            ];
         }
-        
+
         return $this->render('pages/formulaire.html.twig', [
             'user' => $user,
-            'itineraires' => $itineraires
+            'itineraires' => $itineraires,
+            'voiture' => $voiture[0]
         ]);
     }
 
@@ -84,6 +96,40 @@ class CoreController extends AbstractController
             return $this->json('itineraire deja enregistre', Response::HTTP_OK);
         }   
         return $this->json('ok-', Response::HTTP_OK);
+    }
+
+    #[Route('/add/vehic', name:'app_vehicule_add', methods:['POST'])]
+    public function addVehicule(Request $request, EntityManagerInterface $entityManager, VoitureRepository $voitureRepository)
+    {
+        $user = $this->getUser();
+        if(!$user){
+            return $this->json('Vous etes deconnecte', Response::HTTP_OK);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        $vehiculeVerif = $voitureRepository->findByUserId($user->getId());
+        if(!$vehiculeVerif){
+            $voiture = new Voiture();
+            $voiture->setAcDc($data['acDc']);
+            $voiture->setAutonomie($data['autonomie']);
+            $voiture->setCapaciteBatterie($data['capaciteBatterie']);
+            $voiture->setConsommation($data['consommation']);
+            $voiture->setMarque($data['marque']);
+            $voiture->setModele($data['modele']);
+            $voiture->setPuissanceAc($data['puissanceAc']);
+            $voiture->setPuissanceDc($data['puissanceDc']);
+            $voiture->setTensionBatterie($data['tensionBatterie']);
+            $voiture->setCreatedAt(new DateTimeImmutable());
+            $voiture->setUser($user);
+
+            $entityManager->persist($voiture);
+            $entityManager->flush();
+
+            return $this->json('vehicule enregistré', Response::HTTP_OK);
+        };
+
+        return $this->json('vous avez déjà un vehicule', Response::HTTP_OK);        
     }
 
     #[Route('/itineraire/{id}/edit', name: 'app_itineraire_edit', methods: ['GET', 'POST'])]

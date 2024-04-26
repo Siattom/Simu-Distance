@@ -73,6 +73,7 @@
                                         {% endfor %}
                                 </select>
                             </div>
+                            <p class="italic">Pour enregistrer vos destinations, rendez-vous sur 'Compte' puis 'Mes recherches'.</p>
                         {% endif %}
                     </div>
 
@@ -85,17 +86,37 @@
 
 
                     <div class="form-group">
-                        <input type="text" id="additional-info" placeholder="Autres informations">
+                        <input type="text" id="additional-info" placeholder="Recherche...">
                         <select name="car" id="electric-api">
                             <option value="">--Sélectionnez votre véhicule--</option>
                         </select>
                     </div>     
                     
                     <div class="form-group">
-                        <input type="text" id="model-info" placeholder="Autres informations">
-                        <select name="car" id="model-api">
-                            <option value="">--Sélectionnez votre modèle--</option>
-                        </select>
+                        {% if voiture == null %}
+                            <input type="text" id="model-info" placeholder="Recherche...">
+                        {% else %}
+                            <input type="text" id="model-info" placeholder="{{voiture.modele}}">
+                        {% endif %}
+                        {% if user == null %}        
+                            <select name="car" id="model-api">
+                                <option value="">--Sélectionnez votre modèle--</option>
+                            </select>
+                        {% else %}
+                            <div class="col-xs-4" id="div-vehicule">
+                                <select name="car" id="model-api">
+                                    {% if voiture == null %}
+                                        <option value="">--Sélectionnez votre modèle--</option>
+                                    {% else %}
+                                        <option value="{{voiture.modele}}">{{voiture.modele}}</option>
+                                    {% endif %}
+                                </select>
+                                  <div>
+                                    <input type="checkbox" id="sauvegarde" name="sauvegarde" />
+                                    <label for="sauvegarde">Sauvegarder</label>
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>    
 
                                     <div class="detail-item">
@@ -143,37 +164,71 @@
                                 <div class="detail-item">
                                     <label for="conso" class="text"><i class="fas fa-tachometer-alt">Consommation moyenne</i></label>
 
-                                    <div class="form-group">
-                                        <div class="col-xs-4">
-                                            <input type="number" id="conso"
-                                                placeholder="Consommation moyenne en kWh/100km"
-                                                class="form-control">
+                                    {% if voiture == null %}
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="conso"
+                                                    placeholder="Consommation moyenne en kWh/100km"
+                                                    class="form-control">
+                                            </div>
                                         </div>
-                                    </div>
+                                    {% else %}
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="conso"
+                                                    placeholder="Consommation moyenne en kWh/100km"
+                                                    value="{{voiture.consommation}}"
+                                                    class="form-control">
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
 
 
                                 <div class="dotted-line"></div>
                                 <label for="conso" class="text"><i class="fas fa-bolt">Energie</i></label>
 
-                                <div class="detail-item">
-                                    <div class="form-group">
-                                        <div class="col-xs-4">
-                                            <input type="number" id="battery"
-                                                placeholder="Capacité de la batterie en kWh" class="form-control">
+                                {% if voiture == null %}
+                                    <div class="detail-item">
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="battery"
+                                                    placeholder="Capacité de la batterie en kWh" class="form-control">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
-
-                                <div class="detail-item">
-                                    <div class="form-group">
-                                        <div class="col-xs-4">
-                                            <input type="number" id="capaChargeCar"
-                                                placeholder="Capacité max de recharge" class="form-control">
+                                {% else %}
+                                    <div class="detail-item">
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="battery"
+                                                    placeholder="Capacité de la batterie en kWh" class="form-control"
+                                                    value="{{voiture.capaciteBatterie}}">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% endif %}
+
+                                {% if voiture == null %}
+                                    <div class="detail-item">
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="capaChargeCar"
+                                                    placeholder="Capacité max de recharge" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="detail-item">
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="capaChargeCar"
+                                                    placeholder="Capacité max de recharge" class="form-control"
+                                                    value="{{voiture.puissanceDc}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
 

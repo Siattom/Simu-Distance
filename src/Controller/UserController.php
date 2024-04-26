@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\ItineraireRepository;
 use App\Repository\UserRepository;
+use App\Repository\VoitureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,17 +60,24 @@ class UserController extends AbstractController
     }
 
     #[Route('/perso', name: 'app_user_show', methods: ['GET'])]
-    public function show(ItineraireRepository $itineraireRepository): Response
+    public function show(ItineraireRepository $itineraireRepository, VoitureRepository $voitureRepository): Response
     {
         $user = $this->getUser();
 
         if($user){
             $id = $user->getId();
             $itineraires = $itineraireRepository->findByUserId($id);
+            $voiture = $voitureRepository->findByUserId($id);
+            if(!$voiture){
+                $voiture = [
+                    '0' => null
+                ];
+            }
             
             return $this->render('user/show.html.twig', [
                 'user' => $user,
-                'itineraires' => $itineraires
+                'itineraires' => $itineraires,
+                'voiture' =>$voiture[0]
             ]);
         }
 
@@ -87,9 +95,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->render('user/menu.html.twig', [
-                'user' => $user
-            ]);
+            return $this->redirectToRoute('app_user_show');
         }
 
         return $this->render('user/edit.html.twig', [
@@ -117,5 +123,22 @@ class UserController extends AbstractController
         return $this->render('user/friwigo.html.twig', [
             'user' => $user
         ]);
+    }
+
+    #[Route('/remove/ve/{id}', name:'app_voiture_remove')]
+    public function removeCar(int $id, VoitureRepository $voitureRepository, EntityManagerInterface $entityManager)
+    {
+        $user = $this->getUser();
+        if(!$user){
+            return $this->redirectToRoute('home');
+        }
+
+        $voiture = $voitureRepository->find($id);
+        if($voiture->getUser() == $user){
+            $entityManager->remove($voiture);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_user_show');
     }
 }

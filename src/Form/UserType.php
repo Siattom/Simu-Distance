@@ -44,8 +44,7 @@ class UserType extends AbstractType
                 'widget' => 'single_text',
                 'html5' => true,
                 'attr' => [
-                    'placeholder' => '__/__/____',
-                    'pattern' => '\d{2}/\d{2}/\d{4}', // Format de date sous forme de regex
+                    'placeholder' => '__/__/____',// Format de date sous forme de regex
                 ],
             ])         
         ;

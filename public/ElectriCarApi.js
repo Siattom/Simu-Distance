@@ -1,6 +1,7 @@
 // Variable globale pour stocker la marque sélectionnée
 var marqueSelect = '';
 var modelSelect = '';
+var vehicule = '';
 
 // Sélection du sélecteur et de l'input
 var selectModel = document.getElementById('model-api');
@@ -115,27 +116,27 @@ function displayModel() {
         })
         .then(data => {
 
-// Ajouter l'option "option" en premier
-var optionDefault = document.createElement('option');
-optionDefault.value = 'option';
-optionDefault.textContent = '--Sélectionnez votre modèle--';
-selectModel.appendChild(optionDefault);
+    // Ajouter l'option "option" en premier
+    var optionDefault = document.createElement('option');
+    optionDefault.value = 'option';
+    optionDefault.textContent = '--Sélectionnez votre modèle--';
+    selectModel.appendChild(optionDefault);
 
-// Boucle à travers les marques et ajoute les options au sélecteur
-data.voitures.forEach(brand => {
-    var option = document.createElement('option');
-    option.value = brand.modele; // La valeur et le texte de l'option seront la même pour chaque marque
-    option.textContent = brand.modele;
-    selectModel.appendChild(option);
-});
+    // Boucle à travers les marques et ajoute les options au sélecteur
+    data.voitures.forEach(brand => {
+        var option = document.createElement('option');
+        option.value = brand.modele; // La valeur et le texte de l'option seront la même pour chaque marque
+        option.textContent = brand.modele;
+        selectModel.appendChild(option);
+    });
 
-// Événement de clic sur une option du sélecteur
-selectModel.addEventListener('click', function(event) {
-    if (event.target.tagName === 'OPTION') {
-        modelSelect = event.target.value; // Mettre à jour la variable avec la marque sélectionnée
-        inputElement.value = modelSelect;
-    }
-});
+    // Événement de clic sur une option du sélecteur
+    selectModel.addEventListener('click', function(event) {
+        if (event.target.tagName === 'OPTION') {
+            modelSelect = event.target.value; // Mettre à jour la variable avec la marque sélectionnée
+            inputElement.value = modelSelect;
+        }
+    });
 
 
             // Événement de changement de sélection
@@ -224,7 +225,7 @@ function recoverCar(selectedCarId) {
         return response.json()
     })
     .then(data => {
-        var vehicule = data.voitures; // Supposons que data.voitures contient un seul objet
+        vehicule = data.voitures; // Supposons que data.voitures contient un seul objet
         document.getElementById('conso').value = vehicule.consommation;
         document.getElementById('battery').value = vehicule.capaciteBatterie;
         document.getElementById('capaChargeCar').value = vehicule.puissanceDc;
@@ -232,34 +233,22 @@ function recoverCar(selectedCarId) {
     .catch(error => console.error('soucis de récupération du véhicule', error));
 }
 
+var calculer = document.getElementById('calculer');
+calculer.addEventListener('click', function(){
+    var favori = document.getElementById('sauvegarde');
+console.log(vehicule)
+    if(favori.checked == true){
+        // Envoi des données de vehicule au backend Symfony
+        return fetch('/add/vehic', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(vehicule)
+        });
+    }
+})
+
 // Appelez la fonction pour charger les marques au chargement de la page
 displayBrand();
 displayModel();
-
-
-
-
-
-// appeler l'api electricarapi
-// url   : https://electricarapi.automiles.fr
-// token : jksdhcksdbcvksdjcqncsjkhsqgdfbx
-
-//-----------------------------------------------------------------------------------
-
-// la liste des marques disponibles         /api/list/mar/{token}
-
-//-----------------------------------------------------------------------------------
-
-// Recherche de marques                     /api/mar/rech/{token}/{string}
-
-//-----------------------------------------------------------------------------------
-
-// liste des voitures d'une marque          /api/list/voi/par/mar/{token}/{marque}
-
-//-----------------------------------------------------------------------------------
-
-// retrouver un modèle                      /api/list/voi/par/mod/{token}/{modele}
-
-//-----------------------------------------------------------------------------------
-
-// info d'un véhicule                       /api/info/voit/{token}/{id}

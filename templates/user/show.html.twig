@@ -76,7 +76,7 @@
                         </tr>
                         <tr class="thp tr-hidden-perso">
                             <th>Date de naissance</th>
-                            <td>{{ user.dateDeNaissance }}</td>
+                            <td>{{ user.dateDeNaissance|date("d/m/Y") }}</td>
                         </tr>
                         <tr class="thp tr-hidden-perso">
                             <th></th>
@@ -98,7 +98,7 @@
                             <tr class="thi tr-hidden-iti">
                                 <th>
                                     {% if itineraire.titre == null %}
-                                        <a class="pasdelien" href="{{ path('app_itineraire_edit', {'id': itineraire.id}) }}">Ajouter un titre</a>
+                                        <a class="pasdelien" href="{{ path('app_itineraire_edit', {'id': itineraire.id}) }}">Ajouter aux favoris</a>
                                     {% else %}
                                         <a class="pasdelien" href="{{ path('app_itineraire_edit', {'id': itineraire.id}) }}">{{itineraire.titre}}</a>
                                     {% endif %}
@@ -106,6 +106,12 @@
                                 <td>{{itineraire.destination}}</td>
                             </tr>
                         {% endfor %}
+                        {% if voiture.marque is defined %}
+                        <tr>
+                            <th><img src="../../../image/car.svg" alt="vehicule" /></th>
+                            <td>{{voiture.marque}} {{voiture.modele}} <a class="pasdelien" href="{{ path('app_voiture_remove', {'id': voiture.id}) }}"><img class="logo" src="../../../image/delete.svg" alt="supprimer"/></a></td>
+                        </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>

@@ -21,6 +21,18 @@ class VoitureRepository extends ServiceEntityRepository
         parent::__construct($registry, Voiture::class);
     }
 
+    public function findByUserId(int $id)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT v
+            FROM App\Entity\Voiture v
+            WHERE v.user = :id' 
+        );
+        $query->setParameter('id', $id);
+        return $query->getResult();
+    }
+
 //    /**
 //     * @return Voiture[] Returns an array of Voiture objects
 //     */
