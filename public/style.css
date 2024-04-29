@@ -1,6 +1,9 @@
 body {
   color: #5bc0de;
   font-family: "Poppins", sans-serif;
+  height: 100%;
+  width: 100%;
+  border: 1px solid blue;
 }
 
 .jumbotron {
@@ -285,5 +288,13 @@ hr {
   #calculer {
     height: 2.5em;
     font-size: 1.4em;
+  }
+
+  #div-from p, #div-to select {
+    transform: scale(1.5);
+  }
+
+  .jumbotron {
+    margin-bottom: 250px;
   }
 }

@@ -1,5 +1,13 @@
 <div class="nav-banner">
 
+    <div class="nav-banner-div" id="toSee">
+        <img 
+            class="img-logo"
+            src="../../../image/Friwimap.png" 
+            alt="Logo Friwimap" 
+        />
+    </div>
+
     <div class="nav-banner-div" id="mapmap">
         <img 
             class="img-nav"
@@ -47,6 +55,74 @@
 
     {% if is_granted('ROLE_ADMIN') %}
         <div class="nav-banner-div" id="admin">
+            <img 
+                class="img-nav"
+                src="../../../image/admin.svg"
+                alt="administrateur"
+            />
+            <p>Admin</p>
+        </div>
+    {% endif %}
+
+</div>
+
+<div class="nav-banner-mobile">
+
+    <div class="nav-banner-mobile-div" id="MobiltoSee">
+        <img 
+            class="img-logo"
+            src="../../../image/Friwimap.png" 
+            alt="Logo Friwimap" 
+        />
+    </div>
+
+    <div class="nav-banner-mobile-div" id="Mobilmapmap">
+        <img 
+            class="img-nav"
+            src="../../../image/map.svg" 
+            alt="carte" 
+        />
+        <p>Carte</p>
+    </div>
+
+    <div class="nav-banner-mobile-div" id="MobiltoCalc">
+        <img 
+            class="img-nav" 
+            src="../../../image/itinerary.svg" 
+            alt="Itinéraire" 
+        />
+        <p>Itinéraire</p>
+    </div>
+
+    <div class="nav-banner-mobile-div" id="Mobilfriwigo">
+        <img 
+            class="img-nav" 
+            src="../../../image/charge.svg" 
+            alt="Friwigo" 
+        />
+        <p>Friwigo</p>
+    </div>
+
+    <div class="nav-banner-mobile-div" id="Mobilactu">
+        <img 
+            class="img-nav" 
+            src="../../../image/groups.svg" 
+            alt="les actualités" 
+        />
+        <p>Actualités</p>
+    </div>
+
+    <div class="nav-banner-mobile-div" id="Mobilcompte">
+        <img 
+            class="img-nav" 
+            src="../../../image/me.svg" 
+            alt="mon compte" 
+        />
+        <p>Compte</p>
+    </div>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="nav-banner-mobile-div" id="Mobiladmin">
             <img 
                 class="img-nav"
                 src="../../../image/admin.svg"

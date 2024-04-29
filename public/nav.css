@@ -24,3 +24,42 @@
     margin-top: 5px; 
     font-size: 12px;
 }    
+
+.img-logo {
+    width: 130px;
+}
+
+.nav-banner-mobile { display: none; }
+
+@media screen and (max-device-width: 800px) {
+    #toSee {
+        display: none;
+    }
+
+    .nav-banner { display: none; }
+
+    .img-nav {
+        width: 50px; /* Largeur de l'image */
+    }
+
+    .nav-banner-mobile-div p {
+        font-size: 20px;
+    }
+
+    .nav-banner-mobile {
+        position: fixed; /* Position absolue */
+        bottom: 0; /* Positionner l'élément en bas */
+        left: 0; /* Positionner l'élément sur le côté gauche */
+        width: 100%; /* La largeur occupera 100% de son conteneur parent */
+        display: flex;
+        justify-content: space-between;
+        background-color: ghostwhite;
+        z-index: 9999;
+    }   
+
+    .nav-banner-mobile-div {
+        text-align: center; /* Pour centrer le contenu horizontalement */
+        flex: 1; /* Pour que chaque élément occupe la même largeur */
+        margin-top: 15px;
+    }
+}

@@ -6,18 +6,24 @@
         
     <div class="compte-page">
         <div class="compte-header">
-            <p>
-                <a class="pasdelien" href="/logout">
-                    <img class="img-param" src="../../../image/logout.png" alt="déconnexion">
-                </a>
-            </p>
+            {% if user != null %}
+                <p>
+                    <a class="pasdelien" href="/logout">
+                        <img class="img-param" src="../../../image/logout.png" alt="déconnexion">
+                    </a>
+                </p>
+            {% endif %}
             <h1>Compte</h1>
         </div>
 
         {% if user == null %}
             
             <div class="deconnecter-compte">
-                <p>Connecter vous ou inscrivez vous pour enregistrer vos adresses principales ou votre véhicule </p>
+                <p>
+                    Connecter vous ou inscrivez vous à 
+                    <img class="perso-texte-logo" src="../../../image/FriwimapSansTexte.png" alt="logo sans texte"/> 
+                    pour enregistrer vos adresses principales ou votre véhicule 
+                </p>
                     
                 <div class="compte-btn-div">    
                     <a href="/login" class="pasdelien">Connexion</a>

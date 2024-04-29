@@ -149,5 +149,11 @@ class CoreController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/logo', name:'app_logo_see', methods:['GET'])]
+    public function seeLogo()
+    {
+        return $this->render('pages/logo.html.twig');
+    }
     
 }

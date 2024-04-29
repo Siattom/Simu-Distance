@@ -41,7 +41,7 @@
 }
 
 .compte-img img {
-    max-width: 27%;
+    max-width: 25%;
     margin: auto;
     align-self: center;
 }
@@ -175,10 +175,36 @@
     font-size: 20px;
 }
 
-@media only screen and (max-width: 800px) {
+.logo-page {
+    width: 100%;
+    display: flex;
+}
+
+.logo-full {
+    height: 100vh;
+    margin: auto;
+}
+
+.perso-texte-logo {
+    width: 80px;
+}
+
+@media only screen and (max-device-width: 800px) {
 
     .compte-img img {
         max-width: 90%;
+    }
+    
+    .compte-page h1{
+        width: 100%;
+        margin-bottom: 1em;
+        text-align: center;
+        transform: scale(1.2);
+    }
+
+    .deconnecter-compte {
+        margin-top: 30%;
+        transform: scale(2);
     }
 
 }

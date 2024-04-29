@@ -3,8 +3,18 @@ friwigo.addEventListener('click', function() {
     window.location.href = '/user/friwigo'
 })
 
+var Mobilfriwigo = document.getElementById('Mobilfriwigo')
+Mobilfriwigo.addEventListener('click', function() {
+    window.location.href = '/user/friwigo'
+})
+
 var compte = document.getElementById('compte')
 compte.addEventListener('click', function(){
+    window.location.href = '/user/perso'
+})
+
+var Mobilcompte = document.getElementById('Mobilcompte')
+Mobilcompte.addEventListener('click', function(){
     window.location.href = '/user/perso'
 })
 
@@ -13,8 +23,18 @@ mapmap.addEventListener('click', function() {
     window.location.href = '/'
 })
 
+var Mobilmapmap = document.getElementById('Mobilmapmap')
+Mobilmapmap.addEventListener('click', function() {
+    window.location.href = '/'
+})
+
 var toCalc = document.getElementById('toCalc')
 toCalc.addEventListener('click', function(){
+    window.location.href = '/calc'
+})
+
+var MobiltoCalc = document.getElementById('MobiltoCalc')
+MobiltoCalc.addEventListener('click', function(){
     window.location.href = '/calc'
 })
 
@@ -23,9 +43,21 @@ actu.addEventListener('click', function(){
     window.location.href = '/actualite'
 })
 
+var Mobilactu = document.getElementById('Mobilactu')
+Mobilactu.addEventListener('click', function(){
+    window.location.href = '/actualite'
+})
+
 var admin = document.getElementById('admin');
 if(admin){
     admin.addEventListener('click', function() {
+        window.location.href = '/admin/articles'
+    })
+}
+
+var Mobiladmin = document.getElementById('Mobiladmin');
+if(Mobiladmin){
+    Mobiladmin.addEventListener('click', function() {
         window.location.href = '/admin/articles'
     })
 }
@@ -123,3 +155,13 @@ if (eyes) {
         }
     });
 }
+
+var toSee = document.getElementById('toSee');
+toSee.addEventListener('click', function(){
+    window.location.href = '/logo'
+})
+
+var MobilToSee = document.getElementById('MobiltoSee');
+MobilToSee.addEventListener('click', function(){
+    window.location.href = '/logo'
+})
