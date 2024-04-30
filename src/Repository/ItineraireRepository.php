@@ -51,8 +51,7 @@ class ItineraireRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             'SELECT i
             FROM App\Entity\Itineraire i
-            WHERE i.user = :id
-            AND i.titre is not null'
+            WHERE i.user = :id'
         );
         $query->setParameter('id', $id);
         return $query->getResult();

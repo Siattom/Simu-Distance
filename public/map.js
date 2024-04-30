@@ -85,7 +85,7 @@
             gmarkers[i].setMap(null);
         }
         var googleMap = document.getElementById('googleMap');
-        googleMap.classList.add('selected-carte')
+        //googleMap.classList.add('selected-carte')
 
         button.classList.add('active');
 
@@ -153,7 +153,7 @@
 
         // Désactiver 
         var googleMap = document.getElementById('googleMap');
-        googleMap.classList.add('selected-carte')
+        //googleMap.classList.add('selected-carte')
     
         button.classList.add('active');
     

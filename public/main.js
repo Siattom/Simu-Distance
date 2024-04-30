@@ -1,52 +1,72 @@
 var friwigo = document.getElementById('friwigo')
-friwigo.addEventListener('click', function() {
-    window.location.href = '/user/friwigo'
-})
+if(friwigo){
+    friwigo.addEventListener('click', function() {
+        window.location.href = '/user/friwigo'
+    })
+}
 
 var Mobilfriwigo = document.getElementById('Mobilfriwigo')
-Mobilfriwigo.addEventListener('click', function() {
-    window.location.href = '/user/friwigo'
-})
+if(Mobilfriwigo){
+    Mobilfriwigo.addEventListener('click', function() {
+        window.location.href = '/user/friwigo'
+    })
+}
 
 var compte = document.getElementById('compte')
-compte.addEventListener('click', function(){
-    window.location.href = '/user/perso'
-})
+if(compte){
+    compte.addEventListener('click', function(){
+        window.location.href = '/user/perso'
+    })
+}
 
 var Mobilcompte = document.getElementById('Mobilcompte')
-Mobilcompte.addEventListener('click', function(){
-    window.location.href = '/user/perso'
-})
+if(Mobilcompte){
+    Mobilcompte.addEventListener('click', function(){
+        window.location.href = '/user/perso'
+    })
+}
 
 var mapmap = document.getElementById('mapmap')
-mapmap.addEventListener('click', function() {
-    window.location.href = '/'
-})
+if(mapmap){
+    mapmap.addEventListener('click', function() {
+        window.location.href = '/map'
+    })
+}
 
 var Mobilmapmap = document.getElementById('Mobilmapmap')
-Mobilmapmap.addEventListener('click', function() {
-    window.location.href = '/'
-})
+if(Mobilmapmap){
+    Mobilmapmap.addEventListener('click', function() {
+        window.location.href = '/map'
+    })
+}
 
 var toCalc = document.getElementById('toCalc')
-toCalc.addEventListener('click', function(){
-    window.location.href = '/calc'
-})
+if(toCalc){
+    toCalc.addEventListener('click', function(){
+        window.location.href = '/'
+    })
+}
 
 var MobiltoCalc = document.getElementById('MobiltoCalc')
-MobiltoCalc.addEventListener('click', function(){
-    window.location.href = '/calc'
-})
+if(MobiltoCalc){
+    MobiltoCalc.addEventListener('click', function(){
+        window.location.href = '/'
+    })
+}
 
 var actu = document.getElementById('actu')
-actu.addEventListener('click', function(){
-    window.location.href = '/actualite'
-})
+if(actu){
+    actu.addEventListener('click', function(){
+        window.location.href = '/actualite'
+    })
+}
 
 var Mobilactu = document.getElementById('Mobilactu')
-Mobilactu.addEventListener('click', function(){
-    window.location.href = '/actualite'
-})
+if(Mobilactu){
+    Mobilactu.addEventListener('click', function(){
+        window.location.href = '/actualite'
+    })
+}
 
 var admin = document.getElementById('admin');
 if(admin){
@@ -157,11 +177,15 @@ if (eyes) {
 }
 
 var toSee = document.getElementById('toSee');
-toSee.addEventListener('click', function(){
-    window.location.href = '/logo'
-})
+if(toSee){
+    toSee.addEventListener('click', function(){
+        window.location.href = '/logo'
+    })
+}
 
 var MobilToSee = document.getElementById('MobiltoSee');
-MobilToSee.addEventListener('click', function(){
-    window.location.href = '/logo'
-})
+if(MobilToSee){
+    MobilToSee.addEventListener('click', function(){
+        window.location.href = '/logo'
+    })
+}

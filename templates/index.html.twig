@@ -9,6 +9,7 @@
     <script src="https://kit.fontawesome.com/ab2155e76b.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet" />
+    <link href="styleIndex.css" rel="stylesheet" />
     <link href="style-autre.css" rel="stylesheet" />
     <link href="nav.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="image/IconFriwimap.png">
@@ -24,22 +25,22 @@
 
 
 
-        <div class="container-fluid-1">
-            <div id="filtre-carte" class="form-group">
+        <div class="container-fluid-index">
+            <div id="filtre-carte" class="rapide">
                 <button class="value" onclick="toggleActive(this)">
-                    <i class="fa fa-map"></i>&nbsp; Borne de Recharge Rapide
+                    Rapide
                 </button>
             </div>
-            <div id="filtre-carte2" class="form-group">
+            <div id="filtre-carte2" class="lente">
                 <button class="value" onclick="toggleActiveSlow(this)">
-                    <i class="fa fa-map"></i>&nbsp; Borne de Recharge Lente
+                    Lente
                 </button>
             </div>
         </div>
 
-        <div class="container-fluid">
+        <div class="container-fluid-in">
                 <div id="output-error">
-                <div id="googleMap">
+                <div class="googleMapIndex" id="googleMap">
 
             </div>
                 <div id="output">

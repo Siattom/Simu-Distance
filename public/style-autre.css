@@ -207,4 +207,16 @@
         transform: scale(2);
     }
 
+    .form {
+        width: 90%;
+    }
+
+    .form h1, .form label {
+        font-size: 30px;
+    }
+
+    .form input {
+        height: 50px;
+        font-size: larger;
+    }
 }

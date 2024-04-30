@@ -49,7 +49,7 @@ body {
 }
 
 #googleMap {
-  width: 80%;
+  width: 99%;
   height: 400px;
   margin: 20px auto;
 }
@@ -242,6 +242,10 @@ hr {
       width: 100%; /* Utiliser toute la largeur disponible */
   }
 
+  #googleMap {
+    height: 600px;
+  }
+
   .col-xs-4 input {
     height: 3em;
     font-size: 2em;
@@ -288,7 +292,7 @@ hr {
     font-size: 1.4em;
   }
 
-  #div-from p, #div-to select {
+  #div-from p {
     transform: scale(1.5);
   }
 

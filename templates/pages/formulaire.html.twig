@@ -69,7 +69,13 @@
                                 <select name="pets" id="mesIti">
                                     <option value="">- Vos destinations -</option>
                                         {% for itineraire in itineraires %}
-                                            <option value="{{itineraire.destination}}">{{itineraire.titre}}{#: {{itineraire.destination}}#}</option>
+                                            <option value="{{itineraire.destination}}">
+                                                {% if itineraire.titre != null %}
+                                                    {{itineraire.titre}}
+                                                {% else %}
+                                                    {{itineraire.destination}}
+                                                {% endif %}
+                                            </option>
                                         {% endfor %}
                                 </select>
                             </div>

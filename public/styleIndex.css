@@ -1,0 +1,73 @@
+
+.container-fluid-in {
+    /*border: 2px solid black;*/
+    height: 85vh;
+    width: 100%;
+  }
+  
+  .googleMapIndex {
+    width: 100%!important;
+    height: 85vh!important;
+    /*margin: 20px auto;*/
+  }
+  
+  .container-fluid-index {
+    position: absolute;
+    top: 22%;
+    left: 1.5%;
+    z-index: 9999;
+    margin: 0 auto;
+    display: flex;
+    border-radius: 3px;
+    /*margin-bottom: 10%;*/
+  }
+  
+  .rapide {
+    background-color: white;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    height: 2.2em;
+    width: 6rem;
+  }
+  
+  .lente {
+    background-color: white;
+    border-left: 1px solid ghostwhite;
+    box-shadow: -1px 0px ghostwhite;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    height: 2.2em;
+    width: 6rem;
+  }
+  
+  .lente button { color: rgb(77, 77, 77); }
+  
+  .rapide button, .lente button {
+    height: 2em;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } 
+
+  @media screen and (max-device-width: 800px) {
+
+    .container-fluid-index {
+      height: 100%;
+      position: absolute;
+      top: 10%;
+      left: 4%;
+      z-index: 9999;
+      margin: 0 auto;
+      display: flex;
+      border-radius: 5px;
+      /*margin-bottom: 10%;*/
+    }
+  
+    .googleMapIndex {
+      height: 80vh!important;
+    }
+
+  .lente button, .rapide button { font-size: 20px; }
+  
+  }

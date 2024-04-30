@@ -19,12 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class CoreController extends AbstractController
 {
     #[Route('/', name:'home', methods:['GET'])]
-    public function home () {
-        return $this->render('index.html.twig');
-    }
-
-    #[Route('/calc', name:'app_calc', methods:['GET'])]
-    public function formForCalcul(ItineraireRepository $itineraireRepository, VoitureRepository $voitureRepository) {
+    public function home (ItineraireRepository $itineraireRepository, VoitureRepository $voitureRepository) {
         $user = $this->getUser();
 
         if($user){
@@ -48,6 +43,12 @@ class CoreController extends AbstractController
             'itineraires' => $itineraires,
             'voiture' => $voiture[0]
         ]);
+    }
+
+    #[Route('/map', name:'app_calc', methods:['GET'])]
+    public function formForCalcul() {
+        
+        return $this->render('index.html.twig');
     }
 
     #[Route('/actualite', name:'app_actu', methods:['GET'])]

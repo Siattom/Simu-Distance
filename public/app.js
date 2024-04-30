@@ -634,7 +634,7 @@
         var filtre2 = document.getElementById('filtre-carte2');
         form.classList.add('details-hidden')
         calcBtn.classList.add('details-hidden')
-        googleMap.classList.add('selected-carte')
+        //googleMap.classList.add('selected-carte')
         filtre.classList.remove('hidden-filtre')
         filtre2.classList.remove('hidden-filtre')
 
@@ -716,7 +716,7 @@
         var filtre2 = document.getElementById('filtre-carte2');
         form.classList.add('details-hidden')
         calcBtn.classList.add('details-hidden')
-        googleMap.classList.add('selected-carte')
+        //googleMap.classList.add('selected-carte')
         filtre.classList.remove('hidden-filtre')
         filtre2.classList.remove('hidden-filtre')
     

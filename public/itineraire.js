@@ -62,8 +62,8 @@ position.addEventListener('click', function(){
 
 var mesItineraires = document.getElementById('mesIti');
 if(mesItineraires){
-    mesItineraires.addEventListener('click', function(){
+    mesItineraires.addEventListener('click', function(event){
         var destination = document.getElementById('to');
-        destination.value = mesItineraires.value
+        destination.value = event.target.value
     }) 
 }

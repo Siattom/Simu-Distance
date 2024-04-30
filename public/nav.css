@@ -36,14 +36,16 @@
         display: none;
     }
 
+    #MobiltoSee { display: none; width: 0px;}
+
     .nav-banner { display: none; }
 
     .img-nav {
-        width: 50px; /* Largeur de l'image */
+        width: 70px; /* Largeur de l'image */
     }
 
     .nav-banner-mobile-div p {
-        font-size: 20px;
+        font-size: 25px;
     }
 
     .nav-banner-mobile {
