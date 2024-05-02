@@ -528,10 +528,13 @@
                 
                 var totalDistance = getTotalDistance(result);
                 // Construire le contenu HTML pour afficher les informations des bornes
-                var bornesHTML = "<div class='infos-bornes'>";
+                var bornesHTML = "<div class='affich-borne'>";
                 infosBornes.forEach(function(borne, index) {
-                    bornesHTML += "<div class='borne'>";
+                    bornesHTML += "<div class='affich-div-left'>";
                     bornesHTML += "<h3>Borne " + (index + 1) + "</h3>";
+                    bornesHTML += "<img class='affich-img' src='../../../image/charging.png' alt='borne de recharge' />";
+                    bornesHTML += "</div>";
+                    bornesHTML += "<div class='affich-div-right'>";
                     bornesHTML += "<p><strong>Temps de recharge:</strong> " + borne.temps + " minutes</p>";
                     bornesHTML += "<p><strong>Titre:</strong> " + borne.titre + "</p>";
                     bornesHTML += "<p><strong>Adresse:</strong> " + borne.adresse + "</p>";
@@ -539,6 +542,7 @@
                     bornesHTML += "</div>";
                 });
                 bornesHTML += "</div>";
+                
                 var totalDurationText = getTotalDuration(result);
 
                 // Afficher le contenu HTML dans la div output

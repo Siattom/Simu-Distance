@@ -299,4 +299,6 @@ hr {
   .jumbotron {
     margin-bottom: 250px;
   }
+
+  .alert-info {font-size: 20px;}
 }

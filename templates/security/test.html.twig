@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+    <div class='affich-borne'>
+        <div class='affich-div-left'>
+            <h3>Borne </h3>
+            <img class="affich-img" src='../../../image/charging.png' alt='borne de recharge' />
+        </div>
+        <div class='affich-div-right'>
+                <p><strong>Temps de recharge:</strong> " + borne.temps + " minutes</p>
+                <p><strong>Titre:</strong> " + borne.titre + "</p>
+                <p><strong>Adresse:</strong> " + borne.adresse + "</p>
+                <p><strong>Puissance:</strong> " + borne.puissance + " kW</p>
+        </div>
+    </div>
+{% endblock %}

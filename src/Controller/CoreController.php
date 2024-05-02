@@ -156,5 +156,11 @@ class CoreController extends AbstractController
     {
         return $this->render('pages/logo.html.twig');
     }
+
+    #[Route('/test', name:"app_test")]
+    public function test()
+    {
+        return $this->render('security/test.html.twig');
+    }
     
 }

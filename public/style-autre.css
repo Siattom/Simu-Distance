@@ -189,6 +189,34 @@
     width: 80px;
 }
 
+.affich-borne {
+    width: 100%;
+    display: flex;
+}
+
+.affich-div-left {
+    width: 30%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.affich-div-left h3 {width: 100%; text-align: center;}
+
+.affich-div-right {
+    width: 70%;
+    padding-left: 2em;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    border-left: 1px solid gainsboro;
+}
+
+.affich-div-right p {width: 100%; text-align: left;}
+
+.affich-img {
+    width: 30%;
+}
+
 @media only screen and (max-device-width: 800px) {
 
     .compte-img img {
@@ -219,4 +247,6 @@
         height: 50px;
         font-size: larger;
     }
+
+    .affich-div-right p {font-size: 20px;}
 }
