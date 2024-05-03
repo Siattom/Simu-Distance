@@ -110,7 +110,9 @@ class CoreController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $vehiculeVerif = $voitureRepository->findByUserId($user->getId());
-        if(!$vehiculeVerif){
+        if($vehiculeVerif){
+            $voitureRepository->remove($vehiculeVerif[0], true);
+            
             $voiture = new Voiture();
             $voiture->setAcDc($data['acDc']);
             $voiture->setAutonomie($data['autonomie']);

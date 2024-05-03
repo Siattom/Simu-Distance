@@ -17,11 +17,12 @@
 
 <body>
     {{ include('nav.html.twig') }}
-    {# <div class="jumbotron">
-        <div class="nav">
+    <div class="jumbotron">
+        {#<div class="nav">
             <img class="logo" src="image/Logo.png" alt="Logo FRIWIMAP" />
             <h1>Calculer la distance de votre trajet.</h1>
-        </div>
+        </div>#}
+
 
 
         <div class="container-fluid-index">
@@ -49,18 +50,15 @@
             <iframe src="https://map.openchargemap.io/?mode=embedded" allow="geolocation" frameborder="0" width="100%" height="500px"></iframe>
         </div> -->
         <!-- <button><a href="/user/show/menu">S'inscrire</a></button> -->
-    </div> #}
+    </div>
 
-        <div id="road-embed-map"></div>
-        <script src="https://map.road.io/client?token=741131bb-88ac-5471-898c-1a978d0c8563"></script>
-        <script>
-        RoadIO.initRoadMap({"position":{"lat":52.363881088889,"lng":4.87660515736648},"zoomLevel":14,"useBrowserLocation":true});
-        </script>
-    
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZeMfqzI4a7F3nsoRrGOWGXQC_qAOzshY&libraries=places"></script> -->
-    <!-- <script src="map.js"></script> -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZeMfqzI4a7F3nsoRrGOWGXQC_qAOzshY&libraries=places"></script>
+        
+
+    <script src="map.js"></script>
     <script src="main.js"></script>
 </body>
 

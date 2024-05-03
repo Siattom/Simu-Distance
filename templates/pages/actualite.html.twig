@@ -10,17 +10,25 @@
 
             {% for article in articles %}
                 <div class="article-div">
-                    {#<img src="../../../image/travel.jpg" alt="illustration de voyage"/>#}
-                    <p class="article-titre">{{article.titre}}</p>
-                    {% if article.texte1 is defined %}
-                        <p>{{article.texte1}}</p>
-                    {% endif %}
-                    {% if article.texte2 is defined %}
-                        <p>{{article.texte2}}</p>
-                    {% endif %}
-                    {% if article.url is defined %}
-                        <p><a href="{{article.url}}" target="blank" class="pasdelien">Lien</a></p>
-                    {% endif %}
+                    <div class="article-left">
+                        {% if article.photo != null %}
+                            <img class="article-photo" src="../../../uploads/{{article.photo}}" alt="illustration de voyage"/>
+                        {% endif %}
+                        <p class="article-titre">{{article.titre}}</p>
+                        {% if article.texte1 is defined %}
+                            <p>{{article.texte1}}</p>
+                        {% endif %}
+                        {% if article.texte2 is defined %}
+                            <p>{{article.texte2}}</p>
+                        {% endif %}
+                        {% if article.url is defined %}
+                            <p>
+                                <a href="{{article.url}}" target="blank" class="pasdelien">
+                                    <img class="article-fleche" src="../../../image/fleche.png" alt="lien"/>
+                                </a>
+                            </p>
+                        {% endif %}
+                    </div>
                 </div>
             {% endfor %}
         </div>

@@ -33,6 +33,15 @@ class VoitureRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function remove(Voiture $voiture, bool $flush = false): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($voiture);
+        if ($flush) {
+            $entityManager->flush();
+        }
+    }
+
 //    /**
 //     * @return Voiture[] Returns an array of Voiture objects
 //     */

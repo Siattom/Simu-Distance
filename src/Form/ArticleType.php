@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Article;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,6 +21,7 @@ class ArticleType extends AbstractType
             ->add('texte1', TextareaType::class, ['label' => 'Texte 1', 'required' => false])
             ->add('texte2', TextareaType::class, ['label' => 'Texte 2', 'required' => false])
             ->add('url', UrlType::class, ['label' => 'URL', 'required' => false])
+            ->add('photo', FileType::class)
             ->add('save', SubmitType::class, ['label' => 'Créer Article']);
     }
 
