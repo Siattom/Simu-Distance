@@ -292,4 +292,21 @@
         height: 84vh;
         margin-top: 0;
     }
+
+    .pac-target-input {
+        width: 30vh!important;
+        font-size: 30px!important;
+    }
+
+    .hdpi {
+        font-size: 20px;
+    }
+
+    .pac-item {
+        height: 2em!important;
+    }
+
+    .road-embed-map-sidebar {
+        width: 60vh;
+    }
 }
