@@ -2,7 +2,7 @@ const RoadIO = (function() {
     const initialZoomLevel = 11;
     const initialPosition = { lat: 52.36388108888907, lng: 4.876605157366489 };
     const userToken = "741131bb-88ac-5471-898c-1a978d0c8563";
-    const googleApiKey = "AIzaSyBZeMfqzI4a7F3nsoRrGOWGXQC_qAOzshY";
+    const googleApiKey = "AIzaSyDapK2Ot0xiUZ8BO9RqpIGC4wxEbElMgm4";
     const baseUrl = "https://map.road.io";
     const clusterMarkers = {};
     const locationMarkers = {};
@@ -537,13 +537,11 @@ const RoadIO = (function() {
   
     const sanitizer = document.createElement('p');
     // NOTE: dont use this for preventing attribute xss since it does not escape quotes
-    // nettoie une chaîne de caractères potentiellement dangereuse ou non sécurisée
     function sanitize(unsafe) {
       sanitizer.innerText = unsafe
       return sanitizer.innerHTML;
     }
-
-    // ajoute une majuscule au début de chaque chaine de caractère
+  
     function startCase(str) {
       if (!str) return '';
       return str.replace(/\W+/g, ' ')
@@ -555,7 +553,6 @@ const RoadIO = (function() {
                 }).join(' ');
     }
   
-    // ajoute une majuscule au début de chaque mot et met en minuscule le reste du mot
     function titleize(str) {
       return str
         .toLowerCase()
@@ -565,7 +562,7 @@ const RoadIO = (function() {
         .join(' ');
     }
   
-    // définie la couleur en fonction du status
+  
     function colorForStatus(status) {
       if (status === 'CHARGING') return 'blue';
       if (status === 'AVAILABLE') return 'olive';
@@ -576,7 +573,6 @@ const RoadIO = (function() {
       return undefined;
     };
   
-    // definie la couleur en fonciton du status
     function colorForMinorStatus(status, minorStatus) {
       if (minorStatus === 'CHARGING') return 'blue';
       if (minorStatus === 'AVAILABLE') return 'olive';
@@ -584,7 +580,6 @@ const RoadIO = (function() {
       return '';
     };
   
-    // associe un label a une couleur
     function labelForStatus(status) {
       if (status === 'CHARGING') return 'Charging';
       if (status === 'AVAILABLE') return 'Available';
@@ -595,7 +590,6 @@ const RoadIO = (function() {
       return status;
     };
   
-    // modifie et associe le nom/type du connecteur
     function formatConnectorType(value) {
       if (value === 'IEC_62196_T1') return 'Type 1';
       if (value === 'IEC_62196_T1_COMBO') return 'Type 1 Combo';
@@ -611,7 +605,6 @@ const RoadIO = (function() {
       return value;
     };
   
-    // prend un objet location en entrée et génère une liste de tags basée sur différentes propriétés de cet objet
     function formatLocationFacilities(location) {
       const tags = [];
       if (location.charging_when_closed) {
@@ -652,19 +645,18 @@ const RoadIO = (function() {
       return tags;
     };
   
-    // prend un nombre en entrée et retourne une version de ce nombre avec des points comme séparateurs de milliers
+  
     function numberWithDots(x) {
       if (!x) return '0';
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
   
-    // crée un objet currencyToSymbolMap qui associe des symboles de devise à des codes de devise
+  
     const currencyToSymbolMap = {
       'EUR': '\u20ac',
       'DKK': 'Dkr',
     };
-
-    // prend un code de devise en entrée et renvoie le symbole de la devise correspondante s'il est présent dans currencyToSymbolMap
+  
     function currencyToSymbol(currency){
       if (!currency) {
         return currency;
@@ -672,12 +664,10 @@ const RoadIO = (function() {
       return currencyToSymbolMap[currency.toUpperCase()] || `${currency} `;
     };
   
-    // arrondit un nombre à un nombre spécifié de décimales
     function round(value, decimals) {
       return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
     }
- 
-    // formate une valeur numérique en une chaîne de caractères représentant une valeur monétaire
+  
     function formatCurrency(value, { precision = 2, thousandSep = false, currency = ''} = {}){
       if (isNaN(value)) return '-';
   
@@ -689,80 +679,58 @@ const RoadIO = (function() {
       return `${currencyToSymbol(currency)}${formatted}`;
     };
   
-    // initialise une carte routière en fonction des paramètres fournis
+  
     async function initRoadMap(params) {
-      // Initialise les paramètres par défaut s'ils ne sont pas fournis
-      params = params || {};
-      // Définit la position initiale de la carte
+      params = params || {}
       let position = params.position || initialPosition;
-      // Définit le niveau de zoom initial de la carte
       const zoomLevel = params.zoomLevel || initialZoomLevel;
-      // Détermine si la localisation du navigateur doit être utilisée
       const useBrowserLocation = params.useBrowserLocation || false;
-    
-      // Si l'utilisation de la localisation du navigateur est activée
+  
       if (useBrowserLocation) {
-        // Vérifie si la fonctionnalité de géolocalisation est disponible dans le navigateur
         if (window.navigator.geolocation) {
-          // Fonction asynchrone pour récupérer la position actuelle de l'utilisateur
-
           const fetchLocation = async function() {
             return new Promise(function(resolve, reject) {
               navigator.geolocation.getCurrentPosition(resolve, reject)
             });
           };
-
           try {
-            // Récupère la position actuelle de l'utilisateur
             const geolocation = await fetchLocation();
-            // Met à jour la position de la carte avec les coordonnées de l'utilisateur
             position = {
               lat: geolocation.coords.latitude,
               lng: geolocation.coords.longitude
             };
           } catch (e) {
-            // En cas d'erreur lors de la récupération de la position, ignore l'erreur
-            console.log('erreur')
+            // ignore
           }
         }
       }
-    
-      // Initialise le client RoadClient
+  
       const roadClient = new RoadClient(userToken);
-    
-      // Charge les polices CSS nécessaires
+  
       loadCSSFonts();
-    
-      // Crée et ajoute un élément <style> contenant du CSS personnalisé à la page
+  
       const style = document.createElement('style');
       style.innerHTML = css;
       widget.appendChild(style);
-    
-      // Crée un script Google Maps en fonction des paramètres fournis
+  
       const created = createGoogleScriptElement({
         token: userToken,
         googleApiKey: googleApiKey,
       });
-    
-      // Si le script Google Maps a été créé avec succès
+  
       if (created) {
-        // Définit une fonction d'initialisation de la carte dans la fenêtre globale
         window.initMap = () => initGoogleMap(roadClient, position, zoomLevel);
         return;
       }
-    
-      // Initialise la carte Google Maps avec le client RoadClient, la position et le niveau de zoom
       initGoogleMap(roadClient, position, zoomLevel);
     }
-    
-    // affiche un message d'erreur sur la page en modifiant le contenu et les propriétés CSS de l'élément errorMessage
+  
     function showError(error) {
       errorMessage.innerHTML = error;
       errorMessage.style.display = 'block';
       errorMessage.style.opacity = 1;
     }
-
-    // fournit des fonctionnalités pour effectuer des requêtes vers une API Road.io
+  
     class RoadClient {
       apiURL = baseUrl;
       // a partir de ce base url il faut que j'essaie de comprendre le fonctionnement de sidebar et le reproduire
@@ -832,23 +800,19 @@ const RoadIO = (function() {
         }
       }
   
-      // récupère les bornes de recharges
-      // url complet : https://map.road.io/api/v1/locations?zoom=14&nwLat=48.090944022644656&nwLng=-0.8150174373535246&seLat=48.050280544581774&seLng=-0.7309033626464934&generation=2
       async fetchLocations(params) {
         return await this.request({
           path: `/api/v1/locations?${new URLSearchParams(params).toString()}`,
         });
       }
   
-      // url complet : https://map.road.io/api/v1/locations/details?lat=48.076943&lng=-0.752428
       async fetchLocationDetails({lat, lng}) {
         return await this.request({
           path: `/api/v1/locations/details?${new URLSearchParams({lat, lng}).toString()}`
         });
       }
     }
-
-    // faciliter le chargement de l'API Google Maps JavaScript en ajoutant dynamiquement un élément <script> au document HTML
+  
     function createGoogleScriptElement(params) {
       const scripts = document.head.querySelectorAll('script');
       for (const script of scripts) {
@@ -869,7 +833,6 @@ const RoadIO = (function() {
     }
   
     // TODO inline css fonts under custom family so that they dont polute customer site. ex map-widget font fam.
-    // charger des polices de caractères depuis Google Fonts en ajoutant dynamiquement des balises <link> au document HTML
     function loadCSSFonts() {
       const fonts = [
         'https://fonts.googleapis.com/css?family=Google+Sans+Text:400&amp;text=%E2%86%90%E2%86%92%E2%86%91%E2%86%93&amp;lang=en',
@@ -884,12 +847,11 @@ const RoadIO = (function() {
         document.head.appendChild(link);
       }
     }
-
-    // responsable de l'initialisation de la carte Google Maps sur la page web
+  
     async function initGoogleMap(roadClient, position, zoomLevel) {
       search = document.createElement('input');
       search.setAttribute("class", "road-embed-map-search");
-      search.setAttribute("placeholder", "Rechercher..")
+      search.setAttribute("placeholder", "Enter a location")
       search.setAttribute("type", "text");
       widget.appendChild(search);
   
@@ -928,23 +890,6 @@ const RoadIO = (function() {
         refreshLocations(map, roadClient);
       });
       
-      // Récupérer les éléments input1 et input2
-      var input1 = document.getElementById("from");
-      var input2 = document.getElementById("to");
-
-      // Create autocomplete objects for all inputs
-      var options = {
-        types: ['address'], // Limiter les suggestions aux adresses
-        componentRestrictions: { country: 'fr' } // Limiter les suggestions à la France
-      };
-
-      
-      // Créer une instance d'Autocomplete pour input1
-      var autocomplete1 = new google.maps.places.Autocomplete(input1, options);
-
-      // Créer une instance d'Autocomplete pour input2
-      var autocomplete2 = new google.maps.places.Autocomplete(input2, options);
-
       autocomplete = new google.maps.places.Autocomplete(search, {
         fields: ["geometry"],
       });
@@ -956,77 +901,52 @@ const RoadIO = (function() {
         map.setCenter(place.geometry.location);
         refreshLocations(map, roadClient);
       });
-
       search.addEventListener('focus', clearSearch);
     }
-
-    // cache le message d'erreur
+  
     function hideErrorMessage() {
       errorMessage.style.display = 'none';
     }
   
-    // vide le champ de recherche
     function clearSearch() {
       search.value = '';
     }
   
-    // prend un objet de position contenant les coordonnées latitude (lat) et longitude (lng) et retourne une clé unique basée sur ces coordonnées
     function positionToKey({lat, lng}) {
       return `lat:${lat}-lng:${lng}`;
     }
   
-    // prend en paramètres un objet markers contenant des marqueurs et leur génération associée, ainsi que la génération actuelle. Elle actualise l'affichage des marqueurs en fonction de leur génération.
+  
+  
     function refreshMarkers(markers, currentGeneration) {
       const forRemoval = [];
-    
-      // Parcours de chaque marqueur dans l'objet 'markers'
       for (const key in markers) {
         const {marker, generation} = markers[key];
-    
-        // Vérification si la génération du marqueur est différente de la génération actuelle
         if (generation !== currentGeneration) {
-          // Ajout du marqueur à la liste des marqueurs à supprimer
           forRemoval.push(key);
-          
-          // Masquage du marqueur sur la carte en le rendant invisible
           marker.setVisible(false);
-          
-          // Poursuite à l'itération suivante de la boucle
           continue;
         }
-    
-        // Si la génération du marqueur correspond à la génération actuelle, le marqueur reste visible sur la carte
         marker.setVisible(true);
       }
-    
-      // Suppression des marqueurs obsolètes
       for (const r of forRemoval) {
-        // Effacement des écouteurs d'événements associés au marqueur pour éviter les fuites de mémoire
         google.maps.event.clearListeners(markers[r].marker, 'mouseover');
         google.maps.event.clearListeners(markers[r].marker, 'mouseout');
         google.maps.event.clearListeners(markers[r].marker, 'click');
-        
-        // Retrait du marqueur de la carte
-        markers[r].marker.setMap(null);
-        
-        // Suppression de l'entrée correspondante de l'objet 'markers'
+        markers[r].marker.setMap(null)
         delete markers[r];
       }
     }
-    
-    // effectue plusieurs opérations liées à la mise à jour des emplacements affichés sur la carte 
+  
     async function refreshLocations(map, roadClient) {
-      // Incrémentation du numéro de génération modulo le nombre maximal de générations
       generation = (generation + 1) % maxGenerations;
-    
-      // Récupération des coordonnées des coins nord-est et sud-ouest de la zone affichée sur la carte
+  
       const zoomLevel = map.getZoom();
       const ne = map.getBounds().getNorthEast();
       const sw = map.getBounds().getSouthWest();
-    
+  
       let response;
       try {
-        // Appel asynchrone à la méthode 'fetchLocations' de 'roadClient' pour obtenir les données des emplacements
         response = await roadClient.fetchLocations({
           zoom: zoomLevel,
           nwLat: ne.lat(),
@@ -1036,115 +956,99 @@ const RoadIO = (function() {
           generation,
         });
       } catch(e) {
-        // Gestion des erreurs lors de la récupération des données des emplacements
         if (e instanceof DOMException) {
-          return; // Si une exception DOM est levée, on abandonne le traitement
+          return;
         }
-        showError(e); // Affichage de l'erreur dans l'interface utilisateur
+        showError(e);
         return;
       }
-    
-      // Traitement de la réponse obtenue
+  
       response = response || {};
       const clusters = response.clusters || [];
       const locations = response.locations || [];
       const responseGeneration = response.generation || 0;
-    
-      // Vérification si la génération de la réponse est antérieure à la génération actuelle
+  
       if (responseGeneration < generation) {
-        return; // Si c'est le cas, on abandonne le traitement
+        return;
       }
-    
-      // Zoom sur le cluster sélectionné s'il est disponible
+  
+      // zoom in on selected cluster if available
       for (const cluster of clusters) {
         if (selectedCluster && `lat:${selectedCluster.lat}-lng:${selectedCluster.lng}` == `lat:${cluster.position.lat}-lng:${cluster.position.lng}`) {
-          zoomOnPosition(selectedCluster); // Zoom sur la position du cluster sélectionné
+          zoomOnPosition(selectedCluster);
           return;
         }
       }
-      selectedCluster = null; // Réinitialisation du cluster sélectionné
-    
-      // Création des marqueurs pour les clusters
+      selectedCluster = null;
+  
       for (const cluster of clusters) {
         clusterMarkers[positionToKey(cluster.position)] = {
-          marker: clusterMarker(map, cluster), // Création du marqueur de cluster
-          generation, // Attribution de la génération actuelle
+          marker: clusterMarker(map, cluster),
+          generation,
         };
       }
-      
-      // Création des marqueurs pour les emplacements
       for (const location of locations) {
         locationMarkers[positionToKey(location.position)] = {
-          marker: locationMarker(map, location, roadClient), // Création du marqueur d'emplacement
-          generation, // Attribution de la génération actuelle
-        };
+          marker: locationMarker(map, location, roadClient),
+          generation,
+        }
       }
-    
-      // Actualisation des marqueurs sur la carte
+  
       refreshMarkers(clusterMarkers, generation);
       refreshMarkers(locationMarkers, generation);
     }
-    
-    // crée et retourne un marqueur représentant un cluster de stations de recharge sur la carte
+  
     function clusterMarker(map, {count, position}) {
-      // Vérification si un marqueur de cluster existe déjà pour cette position
       const existingMarker = clusterMarkers[positionToKey(position)];
-    
-      // Si un marqueur existe déjà, met à jour le texte de son étiquette avec le nouveau compte
+  
       if (existingMarker) {
         const currentLabel = existingMarker.marker.label;
-        currentLabel.text = count; // Mise à jour du texte de l'étiquette avec le nouveau compte
+        currentLabel.text = count;
         existingMarker.marker.label = currentLabel;
-        return existingMarker.marker; // Retourne le marqueur existant mis à jour
+        return existingMarker.marker;
       }
-    
-      // Création d'un nouveau marqueur de cluster
+  
       const marker = new google.maps.Marker({
-        position: position, // Position du marqueur
+        position: position,
         icon: {
-          url: `data:image/svg+xml;base64,${clusterSvg}`, // URL de l'icône du marqueur (format SVG encodé en base64)
-          scaledSize: new google.maps.Size(45, 45), // Taille de l'icône du marqueur
+          url: `data:image/svg+xml;base64,${clusterSvg}`,
+          scaledSize: new google.maps.Size(45, 45),
         },
         label: {
-          text: "" + count, // Texte de l'étiquette du marqueur, représentant le compte de stations de recharge
-          color: "rgba(255,255,255,0.9)", // Couleur du texte de l'étiquette
-          fontSize: "12px", // Taille de la police du texte de l'étiquette
+          text: "" + count,
+          color: "rgba(255,255,255,0.9)",
+          fontSize: "12px",
         },
-        map, // Carte à laquelle le marqueur est associé
-        title: `Cluster of ${count} charging stations`, // Titre affiché lors du survol du marqueur
-        // Ajustement de l'indice Z pour être au-dessus des autres marqueurs
-        zIndex: google.maps.Marker.MAX_ZINDEX + count, // Indice Z du marqueur
-        visible: false // Visibilité initiale du marqueur (false pour ne pas l'afficher immédiatement)
+        map,
+        title: `Cluster of ${count} charging stations`,
+        // adjust zIndex to be above other markers
+        zIndex: google.maps.Marker.MAX_ZINDEX + count,
+        visible: false
       });
-    
-      // Ajout d'un écouteur d'événements pour gérer le clic sur le marqueur de cluster
+  
       marker.addListener('click', () => {
-        selectedCluster = position; // Mise à jour du cluster sélectionné
-        zoomOnPosition(position); // Zoom sur la position du cluster sélectionné
+        selectedCluster = position;
+        zoomOnPosition(position);
       });
-    
-      return marker; // Retourne le nouveau marqueur de cluster créé
+  
+      return marker;
     }
-    
-    // prend une position géographique comme paramètre et effectue un zoom sur cette position sur la carte.
+  
     function zoomOnPosition(position) {
       map.setCenter(position);
       const zoom = map.getZoom()
       map.setZoom(zoom + 1);
     }
   
-    // fermer la barre latérale (sidebar) dans l'interface utilisateur
     function closeSidebar(e) {
       selectedLocation = null;
       sidebar.style.left = "-350px";
     }
-
-    // chargée de créer et de configurer les marqueurs de localisation sur la carte
+  
     function locationMarker(map, location, roadClient) {
       let svg;
       let svgHover;
-    
-      // Sélectionne le SVG en fonction du statut de l'emplacement
+  
       switch (location.status) {
         case StatusAvailable:
           svg = locationAvailableSvg;
@@ -1155,9 +1059,9 @@ const RoadIO = (function() {
           svgHover = locationChargingHoverSvg;
           break;
         case StatusUnavailable:
-          svg = locationUnavailableSvg;
-          svgHover = locationUnavailableHoverSvg;
-          break;
+            svg = locationUnavailableSvg;
+            svgHover = locationUnavailableHoverSvg;
+            break;
         case StatusUnknown:
           svg = locationUnknownSvg;
           svgHover = locationUnknownHoverSvg;
@@ -1165,56 +1069,50 @@ const RoadIO = (function() {
         default:
           throw `Invalid status: ${location.status}`;
       }
-    
-      // Vérifie l'existence du marqueur pour cet emplacement
+  
       const existingMarker = locationMarkers[positionToKey(location.position)];
       if (existingMarker) {
-        // Met à jour l'URL de l'icône du marqueur avec le SVG correspondant
         existingMarker.marker.icon.url = `data:image/svg+xml;base64,${svg}`;
-        return existingMarker.marker; // Renvoie le marqueur existant
+        return existingMarker.marker;
       }
-    
-      // Crée un nouveau marqueur pour cet emplacement
-      const marker = new google.maps.Marker({
-        position: location.position,
-        icon: {
-          url: `data:image/svg+xml;base64,${svg}`,
-          scaledSize: new google.maps.Size(45, 45),
-        },
-        label: {
-          text: " ",
-        },
-        map,
-        title: " ",
-        zIndex: google.maps.Marker.MAX_ZINDEX + 10000,
-        visible: false
+  
+     const marker = new google.maps.Marker({
+       position: location.position,
+       icon: {
+         url: `data:image/svg+xml;base64,${svg}`,
+         scaledSize: new google.maps.Size(45, 45),
+       },
+       label: {
+         text: " ",
+       },
+       map,
+       title: " ",
+       zIndex: google.maps.Marker.MAX_ZINDEX + 10000,
+       visible: false
+     });
+     marker.addListener('mouseover', function() {
+        console.log(marker)
+      marker.setIcon({
+        url: `data:image/svg+xml;base64,${svgHover}`,
+        scaledSize: new google.maps.Size(45, 45),
       });
-    
-      // Ajoute des écouteurs d'événements pour le survol et le clic sur le marqueur
-      marker.addListener('mouseover', function() {
-        marker.setIcon({
-          url: `data:image/svg+xml;base64,${svgHover}`,
-          scaledSize: new google.maps.Size(45, 45),
-        });
+     });
+     marker.addListener('mouseout', function() {
+      marker.setIcon({
+        url: `data:image/svg+xml;base64,${svg}`,
+        scaledSize: new google.maps.Size(45, 45),
       });
-    
-      marker.addListener('mouseout', function() {
-        marker.setIcon({
-          url: `data:image/svg+xml;base64,${svg}`,
-          scaledSize: new google.maps.Size(45, 45),
-        });
-      });
-    
+     });
+  
       marker.addListener('click', async function() {
-        renderSidebarPerso(location); // Affiche les détails de l'emplacement dans la barre latérale
+        renderSidebar(location)  
         //const url = `https://maps.google.com/maps?daddr=${location.position.lat},${location.position.lng}`
         //window.open(url, '_blank').focus();
+      
       });
-    
-      return marker; // Renvoie le nouveau marqueur créé
+     return marker;
     }
-    
-    // traduit un composant de prix en une chaîne de caractères descriptive, en fonction de son type
+  
     function translatePriceComponent(priceComponent, currency) {
       switch (priceComponent.type) {
         case 'FLAT':
@@ -1235,7 +1133,6 @@ const RoadIO = (function() {
     }
   
     // prettier-ignore
-    // génère le contenu HTML spécifique pour afficher les détails du tarif d'un connecteur de recharge, tels que le prix et le type de tarification
     function renderConnectorTariff(tariff, unreliableTariffs, customNote) {
       if (!tariff) return [];
   
@@ -1267,7 +1164,6 @@ const RoadIO = (function() {
     }
   
     // prettier-ignore
-    // génère le contenu HTML pour afficher tous les détails d'un connecteur de recharge spécifique, y compris les détails du connecteur lui-même ainsi que les détails du tarif
     function renderConnector(location, evse, connector) {
       const content = [];
       const image = ICONS[`ICON_${connector.standard}`];
@@ -1304,59 +1200,47 @@ const RoadIO = (function() {
     }
   
     // prettier-ignore
-    // génère le contenu HTML pour afficher les détails d'un équipement de recharge électrique (EVSE) spécifique
     function renderEvse(location, evse) {
       const content = [];
-      // Début de la section EVSE
       content.push('<div>');
-        // Titre avec l'icône EVSE et l'ID de l'EVSE
         content.push('<h4 class="inverted">');
           content.push(`<span>${ICON_EVSE}</span>`);
           content.push(sanitize(evse.evse_id));
         content.push('</h4>');
-        // Tableau pour afficher les détails de l'EVSE
         content.push('<table class="inverted">');
           content.push('<tbody>');
-            // Ligne pour afficher le statut de l'EVSE
             content.push('<tr>');
               content.push('<td>Status</td>');
-              content.push('<td>');
-                // Div pour le statut avec la couleur correspondante
-                content.push(`<div class="label ${colorForMinorStatus(location.status, evse.status)}">`);
-                  content.push(sanitize(startCase((evse.status || '').toLowerCase())));
-                content.push('</div>');
-              content.push('</td>');
-            content.push('</tr>');
-            // Ligne pour afficher la puissance maximale de l'EVSE si disponible
-            if (evse.maxPower) {
-              content.push('<tr>');
-                content.push('<td>Max Power</td>');
-                content.push(`<td>${Math.round(evse.maxPower * 100) / 100}kW</td>`);
+                content.push('<td>')
+                  content.push(`<div class="label ${colorForMinorStatus(location.status,evse.status)}">`)
+                    content.push(sanitize(startCase((evse.status || '').toLowerCase())));
+                  content.push('</div>');
+                content.push('</td>');
               content.push('</tr>');
+              if (evse.maxPower) {
+                content.push('<tr>');
+                  content.push('<td>Max Power</td>');
+                  content.push(`<td>${Math.round(evse.maxPower * 100) / 100}kW</td>`);
+                content.push('</tr>');
+              }
+            content.push('</tbody>');
+          content.push('</table>');
+  
+          content.push('<table class="inverted" style="margin-top: -16px">');
+            content.push('<tbody>');
+            const connectors = evse.connectors || [];
+            for (const connector of connectors) {
+              content.push(...renderConnector(location, evse, connector));
             }
           content.push('</tbody>');
         content.push('</table>');
-    
-        // Tableau pour afficher les détails des connecteurs de l'EVSE
-        content.push('<table class="inverted" style="margin-top: -16px">');
-          content.push('<tbody>');
-          const connectors = evse.connectors || [];
-          // Pour chaque connecteur, appeler renderConnector et ajouter son contenu
-          for (const connector of connectors) {
-            content.push(...renderConnector(location, evse, connector));
-          }
-        content.push('</tbody>');
-      content.push('</table>');
-      // Diviseur entre chaque EVSE
-      content.push('<div class="divider"></div>');
-      // Fin de la section EVSE
+        content.push('<div class="divider"></div>');
       content.push('</div>');
       return content;
     }
-    
+  
     // prettier-ignore
-    // génère le contenu HTML pour afficher les détails d'un emplacement dans une barre latérale
-    function renderSidebarPerso(location) {
+    function renderSidebar(location) {
       const facilities = formatLocationFacilities(location);
   
       let content = [];
@@ -1437,7 +1321,6 @@ const RoadIO = (function() {
   
     return {
       initRoadMap,
-      getMap: () => map,
       center: function() {
         if (!map) {
           return {
@@ -1467,948 +1350,3 @@ const RoadIO = (function() {
       }
     };
   }());
-
-// #############################################################################################################################
-// #############################################################################################################################
-// #############################################################################################################################
-// #############################################################################################################################
-
-//  const removeMarkers = () => {
-//    Markers.forEach((m) => m.setMap(null));
-//    Markers = [];
-//}
-
-var selectedChargeType = 'all';
-
-all.addEventListener('click', function(){
-  selectedChargeType = 'all';
-})
-
-normal.addEventListener('click', function(){
-  selectedChargeType = 'normal';
-})
-
-fast.addEventListener('click', function(){
-  selectedChargeType = 'fast';
-})
-
-const baseUrl = "https://map.road.io";
-
-function kmToDegrees(km, latitude) {
-  const earthRadiusKm = 6371; // Rayon moyen de la Terre en km
-
-  // Conversion pour la latitude (indépendant de la position)
-  const deltaLat = km / earthRadiusKm * (180 / Math.PI);
-  console.log("Delta Latitude: " + deltaLat); // Ajout d'un message de débogage
-
-  // Conversion pour la longitude (dépend de la latitude actuelle)
-  const deltaLng = (km / earthRadiusKm) * (180 / Math.PI) / Math.cos(latitude * Math.PI / 180);
-  console.log("Delta Longitude: " + deltaLng); // Ajout d'un message de débogage
-
-  return { deltaLat, deltaLng };
-}
-
-// fournit des fonctionnalités pour effectuer des requêtes vers une API Road.io
-class RoadClient {
-  apiURL = baseUrl;
-  // a partir de ce base url il faut que j'essaie de comprendre le fonctionnement de sidebar et le reproduire
-    
-  constructor(token) {
-    this.token = token;
-    this.abort = new AbortController();
-    this.timeout = null;
-  }
-    
-  _token;
-    
-  get token() {
-    return this._token;
-  }
-    
-  set token(token) {
-    if (!token) {
-      throw new Error("No valid Road.io token provided");
-    }
-    
-    this._token = token;
-  }
-    
-  async request(options) {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-      this.timeout = null
-    }
-    this.abort.abort();
-    this.abort = new AbortController();
-    const signal = this.abort.signal;
-    try {
-      const reqURL = `${this.apiURL}${options.path}`;
-      const token = this.token;
-      const perform = new Promise(function(resolve, reject) {
-        this.timeout = setTimeout(function() {
-          fetch(reqURL, {
-            signal,
-            method: options.method || "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }).then(resolve).catch(reject);
-        }, 500);
-      }.bind(this))
-      const response = await perform;
-      switch (response.status) {
-      case 200:
-        return response.json();
-      case 400:
-        throw new Error('Bad request');
-      case 404:
-        throw new Error('Not Found');
-      case 500:
-        throw new Error('Server Error');
-      case 503:
-        throw new Error('Timeout!');
-      default:
-        throw new Error(`Unexpected status: ${response.status}`);
-      }
-    } catch (e) {
-      if (e instanceof DOMException) {
-        return null;
-      }
-      throw e;
-    }
-  }
-    
-  // récupère les bornes de recharges
-  // url complet : https://map.road.io/api/v1/locations?zoom=14&nwLat=48.090944022644656&nwLng=-0.8150174373535246&seLat=48.050280544581774&seLng=-0.7309033626464934&generation=2
-  async fetchLocations(params) {
-    return await this.request({
-      path: `/api/v1/locations?${new URLSearchParams(params).toString()}`,
-    });
-  }
-    
-  // url complet : https://map.road.io/api/v1/locations/details?lat=48.076943&lng=-0.752428
-  async fetchLocationDetails({lat, lng}) {
-    return await this.request({
-      path: `/api/v1/locations/details?${new URLSearchParams({lat, lng}).toString()}`
-    });
-  }
-}
-
-function getTotalDistance(result) {
-    let totalDistance = 0;
-    result.routes[0].legs.forEach(leg => {
-        totalDistance += leg.distance.value; // Utilisez .value pour obtenir la distance en mètres
-    });
-    return Math.round(totalDistance / 1000); // Arrondir au kilomètre le plus proche
-}
-
-async function fetchNearestChargePoint(latitude, longitude, selectedChargeType) {
-  const userToken = "741131bb-88ac-5471-898c-1a978d0c8563";
-  const roadClient = new RoadClient(userToken);
-
-  // Définir le rayon en km
-  const radiusInKm = 30;
-  const { deltaLat, deltaLng } = kmToDegrees(radiusInKm, latitude);
-
-  // Ajuster les paramètres pour un périmètre de 30 km
-  const params = {
-    zoom: 14,
-    nwLat: latitude + deltaLat,
-    nwLng: longitude - deltaLng,
-    seLat: latitude - deltaLat,
-    seLng: longitude + deltaLng,
-    generation: 2
-  };
-
-  try {
-    const data = await roadClient.fetchLocations(params);
-
-    if (data && data.locations && data.locations.length > 0) {
-      // Filtrer les points de charge en fonction du type de charge sélectionné
-      let filteredChargePoints = data.locations.filter(chargePoint => {
-        return selectedChargeType === 'all' ||
-          (selectedChargeType === 'normal' && chargePoint.status && chargePoint.status === 1) ||
-          (selectedChargeType === 'fast' && chargePoint.status && chargePoint.status === 3);
-      });
-
-      if (selectedChargeType === 'all') {
-        // Filtrer les bornes qui ont des connexions définies
-        filteredChargePoints = filteredChargePoints.filter(chargePoint => chargePoint.status);
-
-        // Trier par ordre décroissant de PowerKW
-        filteredChargePoints.sort((a, b) => {
-          const powerA = a.maxPower || 0; // Utiliser 0 si PowerKW n'est pas défini
-          const powerB = b.maxPower || 0; // Utiliser 0 si PowerKW n'est pas défini
-          return powerB - powerA;
-        });
-      }
-
-      if (filteredChargePoints.length > 0) {
-        // Trier les points de charge filtrés par distance par rapport à la position actuelle
-        filteredChargePoints.sort((a, b) => {
-          // Calculer les distances par rapport à la position actuelle
-          const distanceA = google.maps.geometry.spherical.computeDistanceBetween(
-            new google.maps.LatLng(latitude, longitude),
-            new google.maps.LatLng(a.position.lat, a.position.lng)
-          );
-          const distanceB = google.maps.geometry.spherical.computeDistanceBetween(
-            new google.maps.LatLng(latitude, longitude),
-            new google.maps.LatLng(b.position.lat, b.position.lng)
-          );
-
-          // Retourner le résultat de la comparaison
-          return distanceA - distanceB;
-        });
-
-        // Obtenir les détails du point de charge le plus proche
-        const nearestChargePoint = filteredChargePoints[0];
-        const chargePointDetails = await roadClient.fetchLocationDetails({
-          lat: nearestChargePoint.position.lat,
-          lng: nearestChargePoint.position.lng
-        });
-
-        // Retourner les détails du point de charge
-        return chargePointDetails;
-      } else {
-        // Si aucun point de charge correspondant n'est trouvé, retourner null
-        return null;
-      }
-    } else {
-      // Si aucune donnée n'est retournée, retourner null
-      return null;
-    }
-  } catch (error) {
-    console.error('Error fetching nearest charging point:', error);
-    return null;
-  }
-}
-
-// calcul le pourcentage restant
-function calculForCalcRoute(distance) {
-    var charge = document.getElementById('charge').value;
-    var conso = document.getElementById('conso').value;
-    var battery = document.getElementById('battery').value;
-    
-            // pour convertir le pourcentage en kWh
-            var chargeKWh = (battery * charge) / 100;
-  
-            // connaitre le niveau correspondant à 30%
-            var trentePourcent = battery * 30 / 100;
-  
-            // connaitre la plage de kWh avant les 30 %
-            var plagePourcent = chargeKWh - trentePourcent;
-  
-            // convertir les kWh restant en km
-            var prevCharge = (100 * plagePourcent) / conso;
-  
-            // avoir la consommation réelle du trajet
-            var consoReel = (conso * distance) / 100;
-  
-            // avoir le reste de charge en kWh
-            var chargeResteKWh = chargeKWh - consoReel;
-  
-            // savoir le pourcentage restant
-            var restPercent = (chargeResteKWh * 100) / battery;
-  
-            return { prevCharge: prevCharge, restPercent: restPercent };
-}
-  
-function verifWaypointsCalcNewRoute(verifWaypoints, selectedChargeType, result, prevCharge, destinationCoordinates, map) {
-    var lastWaypoint = verifWaypoints.length - 1;
-    var lastWaypointAddress = verifWaypoints[lastWaypoint].location;
-    // Use the Google Maps Geocoding service to convert address to coordinates
-    var geocoder = new google.maps.Geocoder();
-    var prevChargeMeters = prevCharge * 1000;
-  
-    geocoder.geocode({ 'address': lastWaypointAddress.query }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            var latitude = results[0].geometry.location.lat();
-            var longitude = results[0].geometry.location.lng();
-            var lastWaypointLatLng = new google.maps.LatLng(latitude, longitude);
-  
-            // Calculer la direction entre le dernier waypoint et la destination
-            var directionToDestination = google.maps.geometry.spherical.computeHeading(lastWaypointLatLng, destinationCoordinates);
-  
-            // Calculer les coordonnées du point insuffisamment chargé à une distance donnée du dernier waypoint dans la direction de la destination
-            var insufficientChargePoint = google.maps.geometry.spherical.computeOffset(
-                lastWaypointLatLng,
-                prevChargeMeters,
-                directionToDestination
-            );
-  
-            // Récupérer la borne de recharge la plus proche du nouveau point
-            fetchNearestChargePoint(insufficientChargePoint.lat(), insufficientChargePoint.lng(), selectedChargeType)
-                .then(nearestChargePoint => {
-                    if (nearestChargePoint) {
-                        // Si une borne de recharge est trouvée à proximité, appeler la fonction reCalcIti avec cette borne
-                        reCalcIti(nearestChargePoint, prevCharge, result, destinationCoordinates);
-                    } else {
-                        output.innerHTML = "<div class='alert-danger'><i class='fas fa-exclamation-triangle'></i>Aucune borne de recharge correspondante trouvée (essayer de sélectionner autre que recharge rapide).</div>";
-                        
-                        
-                        ('Aucune borne de recharge trouvée à proximité.');
-                        // Gérer le cas où aucune borne de recharge n'est trouvée à proximité
-                    }
-                })
-                .catch(error => console.error('Erreur lors de la récupération de la borne de recharge la plus proche:', error));
-            } else {
-                console.error('Geocode was not successful for the following reason: ' + status);
-            }
-        });
-}
-    
-    var infosBornes = [];
-  
-function calcRoute() {
-      infosBornes = [];
-      var charge = document.getElementById('charge').value;
-      var avoidHighwaysStatut = document.getElementById('avoidHighways').checked;
-  
-      // Create request
-      var request = {
-          origin: document.getElementById("from").value,
-          destination: document.getElementById("to").value,
-          travelMode: google.maps.TravelMode.DRIVING,
-          unitSystem: google.maps.UnitSystem.METRIC,
-          avoidHighways: avoidHighwaysStatut
-      };
-  
-      var directionsDisplay = new google.maps.DirectionsRenderer();
-      directionsDisplay.setMap(RoadIO.getMap());
-      var directionsService = new google.maps.DirectionsService();
-      // Pass the request to the route method
-      directionsService.route(request, function (result, status) {
-          if (status == google.maps.DirectionsStatus.OK) {
-              // Display route information
-              var distanceData = result.routes[0].legs[0].distance.text;
-              var distanceDataSansKm = distanceData.replace(' km', '');
-              var distanceSansVirgule = distanceDataSansKm.replace(',', '.');
-              var distance = distanceSansVirgule.replace(/\s+/g, '');
-  
-              var { prevCharge, restPercent } = calculForCalcRoute(distance);
-  
-              if (prevCharge <= distance) {
-                  var route = result.routes[0].overview_path;
-                  var prevChargeMeters = prevCharge * 1000;
-  
-                  // Calculer le point d'insuffisance de batterie le long de l'itinéraire
-                  var distanceTraveled = 0;
-                  var insufficientChargePoint = null;
-                  for (var i = 0; i < route.length - 1; i++) {
-                      var segmentDistance = google.maps.geometry.spherical.computeDistanceBetween(route[i], route[i + 1]);
-                      if (distanceTraveled + segmentDistance >= prevChargeMeters) {
-                          var remainingDistance = prevChargeMeters - distanceTraveled;
-                          insufficientChargePoint = google.maps.geometry.spherical.computeOffset(route[i], remainingDistance, google.maps.geometry.spherical.computeHeading(route[i], route[i + 1]));
-                          break;
-                      }
-                      distanceTraveled += segmentDistance;
-                  }
-  
-                  // Ajouter un marker au point où la batterie est insuffisante
-                  if (insufficientChargePoint) {
-                      new google.maps.Marker({
-                          position: insufficientChargePoint,
-                          map: RoadIO.getMap(),
-                          title: "Battery Insufficient Here"
-                      });
-                  }
-  
-                  calcNewRoute(result, prevCharge, result.routes[0].legs[0].end_location);
-              } else {
-                  console.log('ok c\'est bon');
-              }
-  
-              var totalDurationText = getTotalDuration(result);
-  
-              const output = document.querySelector('#output');
-              output.innerHTML = "<div class='alert-info'>De: " + document.getElementById("from").value + " avec " + charge + " %.<br />à: " + document.getElementById("to").value + " avec " + Math.round(restPercent) + " %.<br /> Distance <i class='fas fa-road'></i> : " + result.routes[0].legs[0].distance.text + ".<br />Durée <i class='fas fa-hourglass-start'></i> : " + totalDurationText;
-  
-              // Supprimer les anciens markers
-              // removeMarkers();
-  
-              // Afficher l'itinéraire sur la carte
-              directionsDisplay.setDirections(result);
-          } else {
-              // Supprimer l'itinéraire de la carte
-              directionsDisplay.setDirections({ routes: [] });
-  
-              // Centrer la carte
-              map.setCenter(myLatLng);
-  
-              // Afficher un message d'erreur
-              output.innerHTML = "<div class='alert-danger'><i class='fas fa-exclamation-triangle'></i> Impossible de trouver la distance.</div>";
-          }
-      });
-}
-
-function calcNewRoute(result, prevCharge, destinationCoordinates) {
-    const output = document.querySelector('#output');
-
-    var verifWaypoints = result.request.waypoints;
-    
-    if (verifWaypoints != undefined && verifWaypoints.length > 0) {
-        // Appelez la fonction verifWaypointsCalcNewRoute en passant les mêmes paramètres
-        verifWaypointsCalcNewRoute(verifWaypoints, selectedChargeType, result, prevCharge, destinationCoordinates, RoadIO.map);
-    } else {   
-        // If there are no waypoints, calculate from the origin to 30%
-        var overviewPath = result.routes[0].overview_path; // Get the overview path of the route
-        var totalDistance = 0;
-        var insufficientChargePoint = null;
-    
-        for (var i = 1; i < overviewPath.length; i++) {
-            var distanceToNextPoint = google.maps.geometry.spherical.computeDistanceBetween(overviewPath[i - 1], overviewPath[i]);
-            totalDistance += distanceToNextPoint;
-    
-            if (totalDistance >= prevCharge * 1000) {
-                // Use the current point as insufficientChargePoint
-                insufficientChargePoint = overviewPath[i];
-                break;
-            }
-        }
-    
-        //if (insufficientChargePoint) { // Vérifier si insufficientChargePoint est défini
-        //    var marker = new google.maps.Marker({
-        //        position: insufficientChargePoint,
-        //        map: map, // Ajouter le marqueur à la carte
-        //        title: 'Point insuffisamment chargé' // Titre du marqueur (facultatif)
-        //    });
-        //}
-        if(!insufficientChargePoint){
-            output.innerHTML = "<div class='alert-danger'><i class='fas fa-exclamation-triangle'></i>Aucune borne de recharge correspondante trouvée (essayer de modifier légèrement votre pourcentage de batterie).</div>";
-        }
-
-        fetchNearestChargePoint(insufficientChargePoint.lat(), insufficientChargePoint.lng(), selectedChargeType)
-        .then(insufficientChargePoint => {
-            if (insufficientChargePoint) {
-                
-                reCalcIti(insufficientChargePoint, prevCharge, result, destinationCoordinates);
-            } else {
-                        output.innerHTML = "<div class='alert-danger'><i class='fas fa-exclamation-triangle'></i>Aucune borne de recharge correspondante trouvée (essayer de modifier légèrement votre pourcentage de batterie).</div>";
-                        console.log('Aucune borne de recharge trouvée à proximité.');
-            }
-        })
-        .catch(error => console.error('Erreur lors de la récupération de la borne de recharge la plus proche:', error));
-    }
-}
-
-
-function getTotalDuration(result) {
-    let totalDuration = 0;
-    result.routes[0].legs.forEach(leg => {
-        totalDuration += leg.duration.value; // Utilisez .value pour obtenir la durée en secondes
-    });
-
-    // Convertir la durée totale en format lisible (heures et minutes)
-    const hours = Math.floor(totalDuration / 3600);
-    const minutes = Math.round((totalDuration % 3600) / 60);
-
-    return hours + " heures et " + minutes + " minutes";
-}
-
-function addressNotNull(address, additionalInfo) {
-    if (!address && !additionalInfo) {
-        return "Non renseigné.";
-    } else {
-        var fullAddress = '';
-        if (address) {
-            fullAddress += address;
-        }
-        if (additionalInfo) {
-            fullAddress += (address ? ", " : "") + additionalInfo;
-        }
-        return fullAddress;
-    }
-}
-
-
-function reCalcIti(insufficientChargePoint, prevCharge, result, destinationCoordinates) {
-    var avoidHighwaysStatut = document.getElementById('avoidHighways');
-    if (avoidHighwaysStatut.checked) {
-        avoidHighwaysStatut = true;
-    } else {
-        avoidHighwaysStatut = false;
-    }
-
-    // Create request
-    var request = {
-        origin: document.getElementById("from").value,
-        destination: document.getElementById("to").value,
-        travelMode: google.maps.TravelMode.DRIVING,
-        unitSystem: google.maps.UnitSystem.METRIC,
-        avoidHighways: avoidHighwaysStatut
-    };
-
-    var capaChargeCar = document.getElementById('capaChargeCar').value;
-    var powerKW = insufficientChargePoint.maxPower
-
-    if (powerKW < capaChargeCar){
-        capaChargeCar = powerKW
-    }
-
-    var conso = document.getElementById('conso').value;
-    var battery = document.getElementById('battery').value;
-    var charge = document.getElementById('charge').value;
-
-    var waypoints = [];
-
-    // Add previous waypoints to the request
-    var prevWaypoints = result.request.waypoints;
-    if (prevWaypoints) {
-        for (var i = 0; i < prevWaypoints.length; i++) {
-            waypoints.push({
-                location: prevWaypoints[i].location,
-                stopover: true 
-            });
-        }
-    }
-
-    // Exemple de requête à l'API Geocoding
-    var lat = insufficientChargePoint.geoLocation.coordinates[0]
-    var lng = insufficientChargePoint.geoLocation.coordinates[1]
-    var apiKey = 'AIzaSyBZeMfqzI4a7F3nsoRrGOWGXQC_qAOzshY';
-    
-    // Construction de l'URL de requête
-    var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
-    let addressData = '';
-
-    // Envoi de la requête GET à l'API Geocoding
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            // Traitement de la réponse de l'API
-            if (data.status === 'OK' && data.results.length > 0) {
-              // Récupération de l'adresse à partir des résultats de la réponse
-              console.log(data.results[0].formatted_address, 'data')
-              addressData = data.results[0].formatted_address; // Assigner la valeur à la variable
-            } else {
-                console.error('Erreur lors de la récupération de l\'adresse.');
-            }
-        })
-        .catch(error => console.error('Erreur lors de la requête à l\'API Geocoding:', error));
-    console.log(waypoints)
-        // Vérifier si l'adresse n'est pas déjà présente dans les waypoints
-        var isAddressAlreadyAdded = waypoints.some(waypoint => waypoint.location.query === addressData);
-
-        // Ajouter le nouveau waypoint s'il n'est pas déjà présent
-        if (!isAddressAlreadyAdded) {
-          console.log(addressData, 'adresseuh')
-            waypoints.push({
-                location: addressData,
-                stopover: true
-            });
-        }
-
-
-    request.waypoints = waypoints;
-    console.log(waypoints, 'waypoints')
-    var directionsService = new google.maps.DirectionsService();
-    // Re-calculer l'itinéraire avec les nouveaux 
-    directionsService.route(request, function (result, updatedStatus) {
-        if (updatedStatus == google.maps.DirectionsStatus.OK) {
-            // Afficher le nouvel itinéraire sur la carte
-            var directionsDisplay = new google.maps.DirectionsRenderer();
-            directionsDisplay.setDirections(result);
-
-            // Récupérer la distance entre le dernier waypoint et la destination
-            var lastLegIndex = result.routes[0].legs.length - 1;
-            var lastLegDistanceData = result.routes[0].legs[lastLegIndex].distance.text;
-            var lastLegDistanceDataSansKm = lastLegDistanceData.replace(' km', '');
-            var lastLegDistanceDataSansKmSansEspace = lastLegDistanceDataSansKm.replace(/\s+/g, '')
-            var remainingDistance = parseFloat(lastLegDistanceDataSansKmSansEspace.replace(',', '.')); // Convertir en nombre
-
-            // pour convertir le pourcentage en kWh
-            var chargeKWh = (battery * charge) / 100;
-
-            // savoir la consommation jusqu'à l'arret borne
-            var consoDepartBorne = (conso * remainingDistance) / 100;
-            
-            // savoir le nombre de kw restant en arrivant à la borne
-            var resteKwBorne = chargeKWh - consoDepartBorne;
-            
-            // connaitre les Kw correspondant à 85% de batterie
-            var quatreVingtCinq = (battery * 85) / 100;
-            
-            // connaitre la plage de recharge
-            var plageRecharge = quatreVingtCinq - resteKwBorne;
-            
-            // récupérer le temps de recharge
-            var tempsRecharge = (plageRecharge / capaChargeCar) * 60;
-
-            // avoir la conso réelle de la borne a la destination
-            var consoReelApresBorne = conso * remainingDistance / 100;
-
-            // avoir le reste de charge en kWh
-            var chargeResteKWhApresBorne = quatreVingtCinq - consoReelApresBorne;
-
-            // savoir le pourcentage restant
-            var restPercentApresBorne = Math.round((chargeResteKWhApresBorne * 100) / battery);
-            if (restPercentApresBorne < 30) {
-
-                // connaitre le niveau correspondant à 30%
-                var trentePourcent = battery * 30 / 100;
-
-                // connaitre la plage de kWh avant les 30 %
-                var plagePourcent = quatreVingtCinq - trentePourcent;
-
-                // convertir les kWh restant en km
-                var prevCharge = (100 * plagePourcent) / conso;
-
-                calcNewRoute(result, prevCharge, destinationCoordinates);
-            } else {
-                console.log('ok');
-            }
-
-            var tempsRechargeArrondi = Math.round(tempsRecharge);
-            // Créer un objet avec les informations de la borne
-            var powerKw = insufficientChargePoint.maxPower && insufficientChargePoint.maxPower ? insufficientChargePoint.maxPower : "Non renseigné";
-
-            var borneInfo = {
-                temps: tempsRechargeArrondi,
-                titre: insufficientChargePoint.name + insufficientChargePoint.city + insufficientChargePoint.address,
-                adresse: addressNotNull(
-                    insufficientChargePoint.address,
-                    insufficientChargePoint.city
-                ),
-                puissance: powerKw
-            };
-            
-        // Vérifier si la nouvelle borne n'existe pas déjà dans le tableau
-        var isDuplicate = false;
-        for (var i = 0; i < infosBornes.length; i++) {
-            if (infosBornes[i].adresse === borneInfo.adresse) {
-                isDuplicate = true;
-                break;
-            }
-        }
-
-        // Ajouter l'objet au tableau infosBornes uniquement s'il n'existe pas déjà
-        if (!isDuplicate) {
-            infosBornes.push(borneInfo);
-        }
-
-
-        // Ajouter l'objet au tableau infosBornes après la vérification
-
-            document.getElementById('openMapBtn').addEventListener('click', function() {
-                // Créer le lien vers Google Maps avec l'itinéraire et les options
-                var googleMapsLink = "https://www.google.com/maps/dir/";
-            
-                // Ajouter l'origine
-                googleMapsLink += encodeURIComponent(document.getElementById("from").value);
-            
-                // Ajouter les étapes intermédiaires
-                infosBornes.forEach(function(borne) {
-                    borne.adresse = borne.adresse.replace(', Non renseigné', '');
-                    googleMapsLink += "/" + encodeURIComponent(borne.adresse);
-                });
-            
-                // Ajouter la destination
-                googleMapsLink += "/" + encodeURIComponent(document.getElementById("to").value);
-            
-                // Vérifier si l'utilisateur veut éviter les autoroutes
-                var avoidHighwaysStatut = document.getElementById('avoidHighways');
-                if (avoidHighwaysStatut.checked) {
-                    googleMapsLink += "/data=!4m3!4m2!2m1!2b1"; // Ajouter l'option pour éviter les autoroutes
-                }
-            
-                // Ouvrir le lien dans une nouvelle fenêtre
-                window.open(googleMapsLink);
-            });
-            
-            
-            var totalDistance = getTotalDistance(result);
-            // Construire le contenu HTML pour afficher les informations des bornes
-            var bornesHTML = "<div class='affich-borne'>";
-            infosBornes.forEach(function(borne, index) {
-                bornesHTML += "<div class='affich-div-left'>";
-                bornesHTML += "<h3>Borne " + (index + 1) + "</h3>";
-                bornesHTML += "<img class='affich-img' src='../../../image/charging.png' alt='borne de recharge' />";
-                bornesHTML += "</div>";
-                bornesHTML += "<div class='affich-div-right'>";
-                bornesHTML += "<p><strong>Temps de recharge:</strong> " + borne.temps + " minutes</p>";
-                bornesHTML += "<p><strong>Titre:</strong> " + borne.titre + "</p>";
-                bornesHTML += "<p><strong>Adresse:</strong> " + borne.adresse + "</p>";
-                bornesHTML += "<p><strong>Puissance:</strong> " + borne.puissance + " kW</p>";
-                bornesHTML += "</div>";
-            });
-            bornesHTML += "</div>";
-            
-            var totalDurationText = getTotalDuration(result);
-
-            // Afficher le contenu HTML dans la div output
-            output.innerHTML = "<div class='alert-info'>De: " + document.getElementById("from").value + " avec " + charge + " %.<br />à: " + document.getElementById("to").value + " avec " + restPercentApresBorne + " %.<br /> Distance <i class='fas fa-road'></i> : " + totalDistance + "Km.<br />Durée <i class='fas fa-hourglass-start'></i> : " + totalDurationText + ".<br /></div>" + bornesHTML;
-        } else {
-            console.error('Erreur lors du recalcul de l\'itinéraire:', updatedStatus);
-        }
-    });
-}
-
-
-function processChargePoints(data, selectedChargeType) {
-    data.forEach(chargePoint => {
-        // Vérifier si les données de la borne de recharge sont valides
-        if (chargePoint.Connections && chargePoint.Connections.length > 0 && chargePoint.Connections[0].PowerKW !== undefined) {
-            // Accéder aux coordonnées de latitude et de longitude
-            var latitude = chargePoint.AddressInfo.Latitude;
-            var longitude = chargePoint.AddressInfo.Longitude;
-
-            // Vérifier si le point de charge correspond au type sélectionné
-            if ((selectedChargeType === 'normal' && chargePoint.Connections[0].PowerKW >= 3 && chargePoint.Connections[0].PowerKW <= 43) ||
-                (selectedChargeType === 'fast' && chargePoint.Connections[0].PowerKW > 43) ||
-                selectedChargeType === 'all') {
-
-                // Déterminer la couleur du marqueur en fonction de la puissance
-                var powerKW = chargePoint.Connections[0].PowerKW;
-                var markerColor = '';
-                if (powerKW >= 3.5 && powerKW < 7) {
-                    markerColor = 'red'; // Puissance entre 3.5 et 7 kW
-                } else if (powerKW >= 7 && powerKW <= 43) {
-                    markerColor = 'orange'; // Puissance entre 7 et 43 kW
-                } else {
-                    markerColor = 'green'; // Puissance supérieure à 43 kW
-                }
-
-                // Créer un marqueur pour chaque point de charge avec la couleur déterminée
-                //var marker = new google.maps.Marker({
-                //    position: { lat: latitude, lng: longitude },
-                //    map: map,
-                //    title: chargePoint.AddressInfo.Title,
-                //    icon: {
-                //        url: 'http://maps.google.com/mapfiles/ms/icons/' + markerColor + '-dot.png' // Utiliser une icône de couleur déterminée
-                //    }
-                //});
-
-                //Markers.push(marker);
-
-                // Ajouter une info-bulle avec le titre du point de charge
-                //var infoWindow = new google.maps.InfoWindow({
-                //    content: chargePoint.AddressInfo.Title
-                //});
-
-                // Afficher l'info-bulle lorsque le marqueur est cliqué
-                marker.addListener('click', function() {
-                    infoWindow.open(map, marker);
-                });
-            }
-        }
-    });
-}
-
- 
-function toggleDesactive(button){
-    window.location.reload()
-}
-
-var gmarkers = [];
-
-// Activer le bouton cliqué (trajet/carte)
-function toggleActive(button) {
-// Désactiver 
-
-    for(i=0; i<gmarkers.length; i++){
-        gmarkers[i].setMap(null);
-    }
-    var buttons = document.querySelectorAll('.value');
-    var form = document.getElementById('form-form');
-    var calcBtn = document.getElementById('calc-btn');
-    var googleMap = document.getElementById('googleMap');
-    var filtre = document.getElementById('filtre-carte');
-    var filtre2 = document.getElementById('filtre-carte2');
-    form.classList.add('details-hidden')
-    calcBtn.classList.add('details-hidden')
-    //googleMap.classList.add('selected-carte')
-    filtre.classList.remove('hidden-filtre')
-    filtre2.classList.remove('hidden-filtre')
-
-    buttons.forEach(function(btn) {
-        btn.classList.remove('active');
-    });
-
-    // Activer 
-    button.classList.add('active');
-
-    var apiKey = '56fa6422-eeff-4be6-a733-92a29cb26fdd';
-    var url = 'https://api.openchargemap.io/v3/poi/?output=json&countrycode=FR&maxresults=100000&key=' + apiKey;
-    
-    return fetch(url)
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            // Assurez-vous que les données sont disponibles et qu'elles contiennent des points de charge
-            if (data && data.length > 0) {
-                // Parcourir les points de charge
-                data.forEach(chargePoint => {
-                    if (chargePoint.Connections && chargePoint.Connections.length > 0 && chargePoint.Connections[0].PowerKW !== undefined) {
-                        // Accéder aux coordonnées de latitude et de longitude
-                        var latitude = chargePoint.AddressInfo.Latitude;
-                        var longitude = chargePoint.AddressInfo.Longitude;
-            
-                        // Vérifier si la puissance est supérieure à 43 kW (recharge rapide)
-                        var powerKW = chargePoint.Connections[0].PowerKW;
-                        if (powerKW > 43) {
-                            // Déterminer la couleur du marqueur en fonction de la puissance
-                            var markerColor = 'green'; // Puissance supérieure à 43 kW
-            
-                            // Créer un marqueur pour chaque point de charge avec la couleur déterminée
-                            var marker = new google.maps.Marker({
-                                position: { lat: latitude, lng: longitude },
-                                map: map,
-                                title: chargePoint.AddressInfo.Title,
-                                icon: {
-                                    url: 'http://maps.google.com/mapfiles/ms/icons/' + markerColor + '-dot.png' // Utiliser une icône de couleur déterminée
-                                }
-                            });
-            
-                            // Ajouter une info-bulle avec le titre du point de charge
-                            var infoWindow = new google.maps.InfoWindow({
-                                content: chargePoint.AddressInfo.Title
-                            });
-            
-                            // Afficher l'info-bulle lorsque le marqueur est cliqué
-                            marker.addListener('click', function() {
-                                infoWindow.open(map, marker);
-                            });
-
-                            gmarkers.push(marker);
-                        }
-                    }
-                });
-            } else {
-                console.error('Aucun point de charge trouvé.');
-            }
-        })
-        .catch(error => console.error('Erreur lors de la récupération des points de charge:', error));
-
-}
-
-// Activer le bouton cliqué (trajet/carte)
-function toggleActiveSlow(button) {
-
-    for(i=0; i<gmarkers.length; i++){
-        gmarkers[i].setMap(null);
-    }
-
-    // Désactiver 
-    var buttons = document.querySelectorAll('.value');
-    var form = document.getElementById('form-form');
-    var calcBtn = document.getElementById('calc-btn');
-    var googleMap = document.getElementById('googleMap');
-    var filtre = document.getElementById('filtre-carte');
-    var filtre2 = document.getElementById('filtre-carte2');
-    form.classList.add('details-hidden')
-    calcBtn.classList.add('details-hidden')
-    //googleMap.classList.add('selected-carte')
-    filtre.classList.remove('hidden-filtre')
-    filtre2.classList.remove('hidden-filtre')
-
-    buttons.forEach(function(btn) {
-    btn.classList.remove('active');
-    });
-
-    // Activer 
-    button.classList.add('active');
-
-    var apiKey = '56fa6422-eeff-4be6-a733-92a29cb26fdd';
-    var url = 'https://api.openchargemap.io/v3/poi/?output=json&countrycode=FR&maxresults=100000&key=' + apiKey;
-    
-    return fetch(url)
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            // Assurez-vous que les données sont disponibles et qu'elles contiennent des points de charge
-            if (data && data.length > 0) {
-                // Parcourir les points de charge
-                data.forEach(chargePoint => {
-                    if (chargePoint.Connections && chargePoint.Connections.length > 0 && chargePoint.Connections[0].PowerKW !== undefined) {
-                        // Accéder aux coordonnées de latitude et de longitude
-                        var latitude = chargePoint.AddressInfo.Latitude;
-                        var longitude = chargePoint.AddressInfo.Longitude;
-            
-                        // Vérifier si la puissance est supérieure à 43 kW (recharge rapide)
-                        var powerKW = chargePoint.Connections[0].PowerKW;
-                        if (powerKW < 43) {
-                            // Déterminer la couleur du marqueur en fonction de la puissance
-                            var markerColor = 'orange'; // Puissance supérieure à 43 kW
-            
-                            // Créer un marqueur pour chaque point de charge avec la couleur déterminée
-                            var marker = new google.maps.Marker({
-                                position: { lat: latitude, lng: longitude },
-                                map: map,
-                                title: chargePoint.AddressInfo.Title,
-                                icon: {
-                                    url: 'http://maps.google.com/mapfiles/ms/icons/' + markerColor + '-dot.png' // Utiliser une icône de couleur déterminée
-                                }
-                            });
-
-                            // Ajouter une info-bulle avec le titre du point de charge
-                            var infoWindow = new google.maps.InfoWindow({
-                                content: chargePoint.AddressInfo.Title
-                            });
-            
-                            // Afficher l'info-bulle lorsque le marqueur est cliqué
-                            marker.addListener('click', function() {
-                                infoWindow.open(map, marker);
-                            });
-
-                        gmarkers.push(marker);
-
-                        }
-                    }
-                });
-            } else {
-                console.error('Aucun point de charge trouvé.');
-            }
-        })
-        .catch(error => console.error('Erreur lors de la récupération des points de charge:', error));
-    
-}
-
-
-function toggleDetails(event) {
-var details = document.getElementById('details');
-var details1 = document.getElementById('navigation-options');
-
-if (!event.target.closest('.panel-body')) {
-    details.classList.toggle('details-hidden');
-    details1.classList.add('details-hidden'); // Fermer details1
-}
-}
-
-function toggleDetails1(event) {
-    var details = document.getElementById('details');
-    var details1 = document.getElementById('navigation-options');
-
-    if (!event.target.closest('.panel-body')) {
-        details1.classList.toggle('details-hidden');
-        details.classList.add('details-hidden'); // Fermer details
-    }
-}
-
-function preventClosing(event) {
-    event.stopPropagation();
-}
-
-// Sélection de tous les éléments avec la classe "station"
-var stationElements = document.querySelectorAll('.station');
-
-// Ajout d'un gestionnaire d'événements à chaque élément station
-stationElements.forEach(function(element) {
-    element.addEventListener('click', function() {
-        // Supprimer la classe 'selected' de tous les éléments de la station
-        stationElements.forEach(function(el) {
-            el.classList.remove('selected');
-        });
-
-        // Ajouter la classe 'selected' à l'élément cliqué
-        element.classList.add('selected');
-
-        // Récupération de la valeur de l'attribut "value" de l'élément cliqué
-        var chargeType = element.getAttribute('value');
-        
-        // Mettre à jour le contenu du textarea avec la valeur sélectionnée
-     });
-});
-
-document.getElementById("calculer").addEventListener("click", () => calcRoute());

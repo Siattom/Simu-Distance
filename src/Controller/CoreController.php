@@ -38,7 +38,7 @@ class CoreController extends AbstractController
             ];
         }
 
-        return $this->render('pages/formulaire.html.twig', [
+        return $this->render('pages/formFriwigo.html.twig', [
             'user' => $user,
             'itineraires' => $itineraires,
             'voiture' => $voiture[0]

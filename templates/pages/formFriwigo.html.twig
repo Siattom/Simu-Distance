@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <title>FRIWIMAP</title>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="https://kit.fontawesome.com/ab2155e76b.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" />
+    <link href="style-autre.css" rel="stylesheet" />
+    <link href="nav.css" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="image/charging.jpg">
+</head>
+
+<body>
+    {{ include('nav.html.twig') }}
+    <div class="jumbotron">
+        {#<div class="nav">
+            <img class="logo" src="image/Logo.png" alt="Logo FRIWIMAP" />
+            <h1>Calculer la distance de votre trajet.</h1>
+        </div>#}
+
+
+
+        <div class="container-fluid-1">
+            <div class="menu">
+                <button class="value active" onclick="toggleDesactive(this)">
+                    <i class="fa fa-car"></i>&nbsp; Trajet
+                </button>
+                <div class="separator"></div>
+                <button class="value" onclick="toggleActive(this)">
+                    <i class="fa fa-map"></i>&nbsp; Carte
+                </button>
+            </div>
+
+            <div id="filtre-carte" class="form-group hidden-filtre">
+                <button class="value" onclick="toggleActive(this)">
+                    <i class="fa fa-map"></i>&nbsp; Borne de Recharge Rapide
+                </button>
+            </div>
+            <div id="filtre-carte2" class="form-group hidden-filtre">
+                <button class="value" onclick="toggleActiveSlow(this)">
+                    <i class="fa fa-map"></i>&nbsp; Borne de Recharge Lente
+                </button>
+            </div>
+
+            <form class="form-horizontal" id="form-form">
+                <form action="" method="post">
+
+                    <div class="form-group">
+                        <label for="from" class="text"><i class="fas fa-map-marker-alt">Départ</i></label>
+                        <div class="col-xs-4" id="div-from">
+                            <input type="text" id="from" placeholder="Départ" class="form-control">
+                            <p id="maPosition">Ma position <img src="../../../image/location.svg" alt="ma position"/></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="to" class="text"><i class="fas fa-map-marker-alt">Destination</i></label>
+                        {% if user == null %}
+                            <div class="col-xs-4">
+                                <input type="text" id="to" placeholder="Destination" class="form-control">
+                            </div>
+                        {% else %}
+                            <div class="col-xs-4" id="div-to">
+                                <input type="text" class="user-to" id="to" placeholder="Destination" class="form-control">
+                                <select name="pets" id="mesIti">
+                                    <option value="">- Vos destinations -</option>
+                                        {% for itineraire in itineraires %}
+                                            <option value="{{itineraire.destination}}">
+                                                {% if itineraire.titre != null %}
+                                                    {{itineraire.titre}}
+                                                {% else %}
+                                                    {{itineraire.destination}}
+                                                {% endif %}
+                                            </option>
+                                        {% endfor %}
+                                </select>
+                            </div>
+                            <p class="italic">Pour enregistrer vos destinations, rendez-vous sur 'Compte' puis 'Mes recherches'.</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="pp">
+                        <div class="panel my-panel">
+                            <div class="panel-header">Indicateurs de Puissance et Consommation</div>
+                            <div class="panel-body">
+
+                                <div class="mm">
+
+
+                    <div class="form-group">
+                        <input type="text" id="additional-info" placeholder="Recherche...">
+                        <select name="car" id="electric-api">
+                            <option value="">--Sélectionnez votre véhicule--</option>
+                        </select>
+                    </div>     
+                    
+                    <div class="form-group">
+                        {% if voiture == null %}
+                            <input type="text" id="model-info" placeholder="Recherche...">
+                        {% else %}
+                            <input type="text" id="model-info" placeholder="{{voiture.modele}}">
+                        {% endif %}
+                        {% if user == null %}        
+                            <select name="car" id="model-api">
+                                <option value="">--Sélectionnez votre modèle--</option>
+                            </select>
+                        {% else %}
+                            <div class="col-xs-4" id="div-vehicule">
+                                <select name="car" id="model-api">
+                                    {% if voiture == null %}
+                                        <option value="">--Sélectionnez votre modèle--</option>
+                                    {% else %}
+                                        <option value="{{voiture.modele}}">{{voiture.modele}}</option>
+                                    {% endif %}
+                                </select>
+                                  <div>
+                                    <input type="checkbox" id="sauvegarde" name="sauvegarde" />
+                                    <label for="sauvegarde">Sauvegarder</label>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>    
+
+                                    <div class="detail-item">
+                                        <label for="to" class="text">
+                                            <i class="fas fa-car-battery power-icon"></i>Puissance de Charge:
+                                        </label>
+                                        <br><br>
+
+                                        <div id="chargeType" class="station-bar">
+                                            <div id="all" class="station" value="all">Toutes</div>
+                                            <div id="normal" class="station" value="normal">Normal<br> (AC 3 kW - 22 kW)</div>
+                                            <div id="fast" class="station" value="fast">Rapide <br> (DC 30 kW - 350 kW )</div>
+                                        </div>
+
+                                        <br>
+
+                                    </div>
+
+                                    <div class="dotted-line"></div>
+
+                                    <div class="detail-item">
+                                        <label for="to" class="text">
+                                            <i class="fas fa-percent power-icon"></i>Pourcentage:
+                                        </label> <br> <br>
+
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="charge" placeholder=" --% "
+                                                    class="form-control-2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="panel my-panel" onclick="toggleDetails(event)">
+                                        
+                            <div class="panel-header">Personnaliser</div>
+                            <div class="panel-body details-hidden" id="details"> 
+                                
+                                <div class="detail-item">
+                                    <label for="conso" class="text"><i class="fas fa-tachometer-alt">Consommation moyenne</i></label>
+
+                                    {% if voiture == null %}
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="conso"
+                                                    placeholder="Consommation moyenne en kWh/100km"
+                                                    class="form-control">
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="conso"
+                                                    placeholder="Consommation moyenne en kWh/100km"
+                                                    value="{{voiture.consommation}}"
+                                                    class="form-control">
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+
+                                <div class="dotted-line"></div>
+                                <label for="conso" class="text"><i class="fas fa-bolt">Energie</i></label>
+
+                                {% if voiture == null %}
+                                    <div class="detail-item">
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="battery"
+                                                    placeholder="Capacité de la batterie en kWh" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="detail-item">
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="battery"
+                                                    placeholder="Capacité de la batterie en kWh" class="form-control"
+                                                    value="{{voiture.capaciteBatterie}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% if voiture == null %}
+                                    <div class="detail-item">
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="capaChargeCar"
+                                                    placeholder="Capacité max de recharge" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="detail-item">
+                                        <div class="form-group">
+                                            <div class="col-xs-4">
+                                                <input type="number" id="capaChargeCar"
+                                                    placeholder="Capacité max de recharge" class="form-control"
+                                                    value="{{voiture.puissanceDc}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="panel my-panel" onclick="toggleDetails1(event)">
+
+                            <div class="panel-header">Chemins Hors Autoroutes</div>
+
+                            <div class="panel-body details-hidden" id="navigation-options">
+                                <div class="mm">
+                                    <div class="detail-item">
+                                        <div class="form-group ">
+                                            <div class="col-xs-6">
+                                                <div class="form-check">
+                                                    <input type="checkbox" id="avoidHighways" class="form-check-input"
+                                                        onclick="preventClosing1(event)">
+                                                    <label class="form-check-label" for="avoidHighways">Éviter les autoroutes</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="col-xs-offset-2 col-xs-10" id="calc-btn" style="text-align: center;">
+                    <button id="calculer" class="btn btn-info btn-lg" onclick="calcRoute();">
+                        <i class="fas fa-map-signs"></i> Calculer
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+
+        <div class="container-fluid">
+            <div id="road-embed-map"></div>
+                <script src="mapFriwigo.js"></script>
+                <script>
+                    RoadIO.initRoadMap({"position":{"lat":48.852536,"lng":2.349489},"zoomLevel":14,"useBrowserLocation":true});
+                </script>
+        </div>
+            <div class="col-xs-offset-2 col-xs-10" id="calc-btn" style="text-align: center;">
+                <button id="openMapBtn" class="btn btn-info btn-lg">Ouvrir dans Google Maps</button>
+            </div>
+        <div id="output"></div>
+
+    </div>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZeMfqzI4a7F3nsoRrGOWGXQC_qAOzshY&libraries=places"></script> -->
+
+    <!-- <script src="appFriwi.js"></script> -->
+    <!-- <script src="newMapFriwigo.js"></script> -->
+    <script src="main.js"></script>
+    <script src="ElectriCarApi.js"></script>
+    <script src="itineraire.js"></script>
+</body>
+
+</html>
