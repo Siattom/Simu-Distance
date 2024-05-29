@@ -236,7 +236,7 @@ function recoverCar(selectedCarId) {
 var calculer = document.getElementById('calculer');
 calculer.addEventListener('click', function(){
     var favori = document.getElementById('sauvegarde');
-console.log(vehicule)
+    //console.log(vehicule)
     if(favori.checked == true){
         // Envoi des données de vehicule au backend Symfony
         return fetch('/add/vehic', {
