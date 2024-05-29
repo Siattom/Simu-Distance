@@ -2533,3 +2533,272 @@ document.getElementById("calculer").addEventListener("click", () => calcRoute())
               return details;
           }
       }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      function reCalcIti(insufficientChargePoint, prevCharge, result, destinationCoordinates) {
+        var avoidHighwaysStatut = document.getElementById('avoidHighways');
+        if (avoidHighwaysStatut.checked) {
+            avoidHighwaysStatut = true;
+        } else {
+            avoidHighwaysStatut = false;
+        }
+
+        // Create request
+        var request = {
+            origin: document.getElementById("from").value,
+            destination: document.getElementById("to").value,
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: avoidHighwaysStatut
+        };
+
+        var capaChargeCar = document.getElementById('capaChargeCar').value;
+        var powerKW = insufficientChargePoint.Connections[0].PowerKW
+
+        if (powerKW < capaChargeCar){
+            capaChargeCar = powerKW
+        }
+
+        var conso = document.getElementById('conso').value;
+        var battery = document.getElementById('battery').value;
+        var charge = document.getElementById('charge').value;
+
+        var waypoints = [];
+
+        // Add previous waypoints to the request
+        var prevWaypoints = result.request.waypoints;
+        if (prevWaypoints) {
+            for (var i = 0; i < prevWaypoints.length; i++) {
+                waypoints.push({
+                    location: prevWaypoints[i].location,
+                    stopover: true 
+                });
+            }
+        }
+
+        // Exemple de requête à l'API Geocoding
+        var lat = insufficientChargePoint.AddressInfo.Latitude
+        var lng = insufficientChargePoint.AddressInfo.Longitude
+        var apiKey = 'AIzaSyBZeMfqzI4a7F3nsoRrGOWGXQC_qAOzshY';
+        
+        // Construction de l'URL de requête
+        var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
+        
+        // Envoi de la requête GET à l'API Geocoding
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Traitement de la réponse de l'API
+                if (data.status === 'OK' && data.results.length > 0) {
+                    // Récupération de l'adresse à partir des résultats de la réponse
+                    addressData = data.results[0].formatted_address; // Assigner la valeur à la variable
+                } else {
+                    console.error('Erreur lors de la récupération de l\'adresse.');
+                }
+            })
+            .catch(error => console.error('Erreur lors de la requête à l\'API Geocoding:', error));
+        
+        // Vérifier si l'adresse n'est pas déjà présente dans les waypoints
+        var isAddressAlreadyAdded = waypoints.some(waypoint => waypoint.location.query === addressData);
+
+        // Ajouter le nouveau waypoint s'il n'est pas déjà présent
+        if (!isAddressAlreadyAdded) {
+            waypoints.push({
+                location: addressData,
+                stopover: true
+            });
+        }
+
+
+
+        request.waypoints = waypoints;
+        
+        // Re-calculer l'itinéraire avec les nouveaux 
+        directionsService.route(request, function (result, updatedStatus) {
+            if (updatedStatus == google.maps.DirectionsStatus.OK) {
+                // Afficher le nouvel itinéraire sur la carte
+                directionsDisplay.setDirections(result);
+
+                // Récupérer la distance entre le dernier waypoint et la destination
+                var lastLegIndex = result.routes[0].legs.length - 1;
+                var lastLegDistanceData = result.routes[0].legs[lastLegIndex].distance.text;
+                var lastLegDistanceDataSansKm = lastLegDistanceData.replace(' km', '');
+                var lastLegDistanceDataSansKmSansEspace = lastLegDistanceDataSansKm.replace(/\s+/g, '')
+                var remainingDistance = parseFloat(lastLegDistanceDataSansKmSansEspace.replace(',', '.')); // Convertir en nombre
+
+                // pour convertir le pourcentage en kWh
+                var chargeKWh = (battery * charge) / 100;
+
+                // savoir la consommation jusqu'à l'arret borne
+                var consoDepartBorne = (conso * remainingDistance) / 100;
+                
+                // savoir le nombre de kw restant en arrivant à la borne
+                var resteKwBorne = chargeKWh - consoDepartBorne;
+                
+                // connaitre les Kw correspondant à 85% de batterie
+                var quatreVingtCinq = (battery * 85) / 100;
+                
+                // connaitre la plage de recharge
+                var plageRecharge = quatreVingtCinq - resteKwBorne;
+                
+                // récupérer le temps de recharge
+                var tempsRecharge = (plageRecharge / capaChargeCar) * 60;
+
+                // avoir la conso réelle de la borne a la destination
+                var consoReelApresBorne = conso * remainingDistance / 100;
+
+                // avoir le reste de charge en kWh
+                var chargeResteKWhApresBorne = quatreVingtCinq - consoReelApresBorne;
+
+                // savoir le pourcentage restant
+                var restPercentApresBorne = Math.round((chargeResteKWhApresBorne * 100) / battery);
+                if (restPercentApresBorne < 30) {
+
+                    // connaitre le niveau correspondant à 30%
+                    var trentePourcent = battery * 30 / 100;
+
+                    // connaitre la plage de kWh avant les 30 %
+                    var plagePourcent = quatreVingtCinq - trentePourcent;
+
+                    // convertir les kWh restant en km
+                    var prevCharge = (100 * plagePourcent) / conso;
+
+                    calcNewRoute(result, prevCharge, destinationCoordinates);
+                } else {
+                    console.log('ok');
+                }
+
+                var tempsRechargeArrondi = Math.round(tempsRecharge);
+                // Créer un objet avec les informations de la borne
+                var powerKw = insufficientChargePoint.Connections[0] && insufficientChargePoint.Connections[0].PowerKW ? insufficientChargePoint.Connections[0].PowerKW : "Non renseigné";
+
+                var borneInfo = {
+                    temps: tempsRechargeArrondi,
+                    titre: insufficientChargePoint.AddressInfo.Title,
+                    adresse: addressNotNull(
+                        insufficientChargePoint.AddressInfo.AddressLine1,
+                        insufficientChargePoint.AddressInfo.Town
+                    ) + ", " +
+                    addressNotNull(insufficientChargePoint.AddressInfo.Postcode, null),
+                    puissance: powerKw
+                };
+                
+            // Vérifier si la nouvelle borne n'existe pas déjà dans le tableau
+            var isDuplicate = false;
+            for (var i = 0; i < infosBornes.length; i++) {
+                if (infosBornes[i].adresse === borneInfo.adresse) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+
+            // Ajouter l'objet au tableau infosBornes uniquement s'il n'existe pas déjà
+            if (!isDuplicate) {
+                infosBornes.push(borneInfo);
+            }
+
+
+            // Ajouter l'objet au tableau infosBornes après la vérification
+
+                document.getElementById('openMapBtn').addEventListener('click', function() {
+                    // Créer le lien vers Google Maps avec l'itinéraire et les options
+                    var googleMapsLink = "https://www.google.com/maps/dir/";
+                
+                    // Ajouter l'origine
+                    googleMapsLink += encodeURIComponent(document.getElementById("from").value);
+                
+                    // Ajouter les étapes intermédiaires
+                    infosBornes.forEach(function(borne) {
+                        borne.adresse = borne.adresse.replace(', Non renseigné', '');
+                        googleMapsLink += "/" + encodeURIComponent(borne.adresse);
+                    });
+                
+                    // Ajouter la destination
+                    googleMapsLink += "/" + encodeURIComponent(document.getElementById("to").value);
+                
+                    // Vérifier si l'utilisateur veut éviter les autoroutes
+                    var avoidHighwaysStatut = document.getElementById('avoidHighways');
+                    if (avoidHighwaysStatut.checked) {
+                        googleMapsLink += "/data=!4m3!4m2!2m1!2b1"; // Ajouter l'option pour éviter les autoroutes
+                    }
+                
+                    // Ouvrir le lien dans une nouvelle fenêtre
+                    window.open(googleMapsLink);
+                });
+                
+                
+                var totalDistance = getTotalDistance(result);
+                // Construire le contenu HTML pour afficher les informations des bornes
+                var bornesHTML = "<div class='affich-borne'>";
+                infosBornes.forEach(function(borne, index) {
+                    bornesHTML += "<div class='affich-div-left'>";
+                    bornesHTML += "<h3>Borne " + (index + 1) + "</h3>";
+                    bornesHTML += "<img class='affich-img' src='../../../image/charging.png' alt='borne de recharge' />";
+                    bornesHTML += "</div>";
+                    bornesHTML += "<div class='affich-div-right'>";
+                    bornesHTML += "<p><strong>Temps de recharge:</strong> " + borne.temps + " minutes</p>";
+                    bornesHTML += "<p><strong>Titre:</strong> " + borne.titre + "</p>";
+                    bornesHTML += "<p><strong>Adresse:</strong> " + borne.adresse + "</p>";
+                    bornesHTML += "<p><strong>Puissance:</strong> " + borne.puissance + " kW</p>";
+                    bornesHTML += "</div>";
+                });
+                bornesHTML += "</div>";
+                
+                var totalDurationText = getTotalDuration(result);
+
+                // Afficher le contenu HTML dans la div output
+                output.innerHTML = "<div class='alert-info'>De: " + document.getElementById("from").value + " avec " + charge + " %.<br />à: " + document.getElementById("to").value + " avec " + restPercentApresBorne + " %.<br /> Distance <i class='fas fa-road'></i> : " + totalDistance + "Km.<br />Durée <i class='fas fa-hourglass-start'></i> : " + totalDurationText + ".<br /></div>" + bornesHTML;
+            } else {
+                console.error('Erreur lors du recalcul de l\'itinéraire:', updatedStatus);
+            }
+        });
+    }

@@ -1950,18 +1950,23 @@ function addressNotNull(address, additionalInfo) {
 
 
 function reCalcIti(insufficientChargePoint, prevCharge, result, destinationCoordinates) {
-var avoidHighwaysStatut = document.getElementById('avoidHighways').checked;
+  var avoidHighwaysStatut = document.getElementById('avoidHighways');
+  if (avoidHighwaysStatut.checked) {
+      avoidHighwaysStatut = true;
+  } else {
+      avoidHighwaysStatut = false;
+  }
 
-// Create request
-var request = {
-    origin: document.getElementById("from").value,
-    destination: document.getElementById("to").value,
-    travelMode: google.maps.TravelMode.DRIVING,
-    unitSystem: google.maps.UnitSystem.METRIC,
-    avoidHighways: avoidHighwaysStatut
-};
+  // Create request
+  var request = {
+      origin: document.getElementById("from").value,
+      destination: document.getElementById("to").value,
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.METRIC,
+      avoidHighways: avoidHighwaysStatut
+  };
 
-var capaChargeCar = document.getElementById('capaChargeCar').value;
+  var capaChargeCar = document.getElementById('capaChargeCar').value;
 var powerKW = insufficientChargePoint.maxPower;
 
 if (powerKW < capaChargeCar) {
@@ -1976,6 +1981,7 @@ var waypoints = [];
 
 // Add previous waypoints to the request
 var prevWaypoints = result.request.waypoints;
+console.log(prevWaypoints, 'prevWaypoints')
 if (prevWaypoints) {
     for (var i = 0; i < prevWaypoints.length; i++) {
         waypoints.push({
