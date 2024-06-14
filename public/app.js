@@ -390,7 +390,6 @@
                 // Traitement de la réponse de l'API
                 if (data.status === 'OK' && data.results.length > 0) {
                     // Récupération de l'adresse à partir des résultats de la réponse
-                    console.log(data, 'data')
                     addressData = data.results[0].formatted_address; // Assigner la valeur à la variable
                 } else {
                     console.error('Erreur lors de la récupération de l\'adresse.');

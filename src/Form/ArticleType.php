@@ -21,7 +21,10 @@ class ArticleType extends AbstractType
             ->add('texte1', TextareaType::class, ['label' => 'Texte 1', 'required' => false])
             ->add('texte2', TextareaType::class, ['label' => 'Texte 2', 'required' => false])
             ->add('url', UrlType::class, ['label' => 'URL', 'required' => false])
-            ->add('photo', FileType::class)
+            ->add('photo', FileType::class, [
+                'label' => 'Photo',
+                'data_class' => null,
+            ])
             ->add('save', SubmitType::class, ['label' => 'Créer Article']);
     }
 
