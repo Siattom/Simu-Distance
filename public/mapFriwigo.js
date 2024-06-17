@@ -53,6 +53,10 @@ const RoadIO = (function() {
     outline-color: rgba(0, 0, 0, 0.87);
   }
 
+  .hidden {
+    display: none;
+  }
+
   #road-embed-map .road-embed-map-sidebar {
       height: 100%;
       width: 350px;
@@ -265,254 +269,48 @@ const RoadIO = (function() {
       color: rgba(0,0,0,.85);
       user-select: none;
     }
-      @media screen and (max-device-width: 800px) {
-  #road-embed-map {
-    overflow: hidden;
-    position: relative;
-  }
-  #road-embed-map .road-embed-map-search {
-    position: absolute;
-    z-index: 9998;
-    top: 5px;
-    left: 5px;
-    width: 280px;
-    font-weight: 400;
-    font-size: 25px;
-    padding-right: 45px;
-    margin: 0;
-    max-width: 100%;
-    flex: 1 0 auto;
-    outline: none;
-    -webkit-tap-highlight-color: rgba(255,255,255,0);
-    text-align: left;
-    line-height: 1.21428571em;
-    font-family: system-ui,-apple-system,BlinkMacSystemFont,Helvetica,Segoe UI,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
-    padding: .67857143em 1em;
-    background: #fff;
-    border: 1px solid rgba(34,36,38,.15);
-    color: rgba(0,0,0,.87);
-    border-radius: .21428571rem;
-    transition: box-shadow .1s ease,border-color .1s ease;
-    box-shadow: none;
-    outline-color: rgba(0, 0, 0, 0.87);
-  }
 
-  #road-embed-map .road-embed-map-sidebar {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      z-index: 9998;
-      top: 0;
-      left: -100%;
-      background-color: rgb(27, 28, 29);
-      color: rgba(255, 255, 255, 0.9);
-      overflow-y: auto;
-      transition: left .5s ease 0s;
-      font-size: 28px;
-      font-family: "Exo 2", system-ui, -apple-system, BlinkMacSystemFont, Helvetica, Segoe UI, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
-    }
+    @media screen and (max-device-width: 800px) {
 
-    #road-embed-map .road-embed-map-error {
-      width: 100%;
-      z-index: 10003;
-      border-radius: .21428571rem;
-      box-shadow: rgb(224, 180, 180) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px;
-      font-size: 25px;
-      padding: 1em 1.5em;
-      line-height: 1.4285em;
-      background-color: #fff6f6;
-      color: #9f3a38;
-      top: 0;
-      position: absolute;
-      opacity: 0;
-      transition: opacity .1s ease;
-      display: none;
-      cursor: pointer;
-    }
+      #road-embed-map .road-embed-map-search {
+        font-size: 25px;
+      }
 
-    #road-embed-map .road-embed-map-search::placeholder {
-      opacity: 0.7;
-      color: #999;
-    }
+      #road-embed-map .road-embed-map-sidebar {
+          width: 100%;
+          left: -100%;
+          transition: none;
+          font-size: 28px;
+        }
 
-    #road-embed-map .road-embed-map-sidebar .sidebar-container {
-      padding-left: 1em; 
-      padding-right: 1em;
-      opacity: 0;
-      transition: opacity .1s ease;
-    }
+        #road-embed-map .road-embed-map-error {
+          font-size: 25px;
+        }
 
-    #road-embed-map .road-embed-map-sidebar .sidebar-container h3 {
-      font-size: 30px;
-      margin: 1rem 0;
-    }
+        #road-embed-map .road-embed-map-sidebar .sidebar-container h3 {
+          font-size: 30px;
+        }
 
-    #road-embed-map .road-embed-map-sidebar .sidebar-container h4 {
-      font-size: 28px;
-      margin: 1rem 0;
-      padding: 0;
-      font-weight: 700;
-      line-height: 1.28571429em;
-    }
+        #road-embed-map .road-embed-map-sidebar .sidebar-container h4 {
+          font-size: 28px;
+        }
 
-    #road-embed-map .road-embed-map-sidebar .sidebar-container table {
-      width: 100%; 
-      font-size: 28px;
-      margin: 1em 0;
-      border-radius: .21428571rem;
-      text-align: left;
-      border-collapse: separate;
-      border-spacing: 0;
-      background-color: rgb(51, 51, 51);
-    }
+        #road-embed-map .road-embed-map-sidebar .sidebar-container table {
+          font-size: 28px;
+        }
 
-    #road-embed-map .road-embed-map-sidebar .sidebar-container table td {
-      transition: background .1s ease,color .1s ease;
-      padding: .78571429em;
-      background: hsla(0,0%,100%,.02);
-      border-collapse: separate;
-      border-color: hsla(0,0%,100%,.1) !important;
-      border-bottom-color: rgba(255, 255, 255, 0.1);
-      border-right-color: rgba(255, 255, 255, 0.1);
-      border-top-color: rgba(255, 255, 255, 0.1);
-      border-top-style: solid;
-      border-top-width: 1px;
-    }
+        #road-embed-map .road-embed-map-sidebar .sidebar-container .label {
+          font-size: 26px;
+        }
 
-    #road-embed-map .road-embed-map-sidebar .sidebar-container table .inverted {
-      background: #333;
-      color: hsla(0,0%,100%,.9);
-      border: none;
-    }
+        #road-embed-map .road-embed-map-sidebar .divider {
+          font-size: 26px;
+        }
 
-    #road-embed-map .road-embed-map-sidebar .sidebar-container table .inverted td {
-      border-color: hsla(0,0%,100%,.1) !important;
-      background-color: rgba(255, 255, 255, 0.02);
-    }
-
-    #road-embed-map .road-embed-map-sidebar .sidebar-container table td:first-child {
-      background: hsla(0,0%,100%,.02);
-      color: #fff;
-      font-weight: 700;
-    }
-
-    #road-embed-map .road-embed-map-sidebar .sidebar-container table td:nth-child(2) {
-      border-left: 1px solid rgba(34,36,38,.15);
-      border-left-color: rgba(34, 36, 38, 0.15);
-    }
-
-    #road-embed-map .road-embed-map-sidebar .sidebar-container .label {
-      margin-left: 0;
-      margin-right: .28571429em;
-      font-size: 26px;
-      display: inline-block;
-      line-height: 1;
-      vertical-align: baseline;
-      margin: .14285714em;
-      background-color: #e8e8e8;
-      background-image: none;
-      padding: .5833em .833em;
-      color: rgba(0,0,0,.6);
-      text-transform: none;
-      font-weight: 700;
-      border: 0 solid transparent;
-      border-radius: .21428571rem;
-      transition: background .1s ease;
-    }
-
-    #road-embed-map .road-embed-map-sidebar .sidebar-container .label.olive {
-      background-color: #77a741 !important;
-      border-color: #77a741 !important;
-      color: #fff !important;
-    }
-
-    #road-embed-map .road-embed-map-sidebar .sidebar-container .label.blue {
-      background-color: #2185d0 !important;
-      border-color: #2185d0 !important;
-      color: #fff !important;
-    }
-
-    #road-embed-map .road-embed-map-sidebar .sidebar-container .label.grey {
-      background-color: #767676 !important;
-      border-color: #767676 !important;
-      color: #fff !important;
-    }
-
-    #road-embed-map .road-embed-map-sidebar .sidebar-container .label.red {
-      background-color: #db2828 !important;
-      border-color: #db2828 !important;
-      color: #fff !important;
-    }
-
-    #road-embed-map .road-embed-map-sidebar .sidebar-container a.directions {
-      background-color: rgb(247, 150, 31);
-      box-shadow: inset 0 0 0 0 rgba(34,36,38,.15);
-      color: #fff;
-      text-shadow: none;
-      background-image: none;
-      display: block;
-      width: 100%;
-      background: #f7931e none;
-      cursor: pointer;
-      display: inline-block;
-      min-height: 1em;
-      outline: none;
-      border: none;
-      padding: .78571429em 0;
-      margin-bottom: 1em;
-      text-transform: none;
-      font-weight: 700;
-      line-height: 1em;
-      font-style: normal;
-      text-align: center;
-      text-decoration: none;
-      border-radius: .21428571rem;
-      user-select: none;
-    }
-
-    #road-embed-map .road-embed-map-sidebar .sidebar-container a.directions span {
-      position: relative;
-    }
-
-    #road-embed-map .road-embed-map-sidebar .sidebar-container svg {
-      margin-right: 0.5em;
-      width: 20px;
-      display: inline;
-      position: relative;
-      top: 5px;
-    }
-
-    #road-embed-map .road-embed-map-sidebar .sidebar-container a.directions svg {
-      position: absolute;
-      left: -1.125rem;
-      top: 0.125rem;
-      width: 0.8125rem;
-      height: 0.8125rem;
-      fill: #fff;
-    }
-
-    #road-embed-map .road-embed-map-sidebar .divider:not(.vertical):not(.horizontal) {
-      border-top: 1px solid rgba(34,36,38,.15);
-      border-bottom: 1px solid hsla(0,0%,100%,.1);
-    }
-
-    #road-embed-map .road-embed-map-sidebar .divider {
-      border-color: transparent !important;
-      font-size: 26px;
-      margin: 1rem 0;
-      line-height: 1;
-      height: 0;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      color: rgba(0,0,0,.85);
-      user-select: none;
-    }
-
-    .italicP {
-      font-size: 25px!important;
-    }
-  }
+        .italicP {
+          font-size: 25px;
+        }
+      }
   `;
 
   const locationAvailableSvg = window.btoa(`
@@ -1385,6 +1183,7 @@ const RoadIO = (function() {
   function closeSidebar(e) {
     selectedLocation = null;
     sidebar.style.left = "-350px";
+    sidebar.classList.add('hidden');
   }
 
   // chargée de créer et de configurer les marqueurs de localisation sur la carte
@@ -2156,6 +1955,7 @@ function verifWaypointsCalcNewRoute(verifWaypoints, selectedChargeType, result, 
 }
 
 function addCustomMarkers(result) {
+
   // Définir les icônes personnalisées pour les marqueurs
   const startIcon = window.btoa(`
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
@@ -2186,12 +1986,14 @@ function addCustomMarkers(result) {
 
   var waypointSvg = {
     url: `data:image/svg+xml;base64,${waypointIcon}`, // URL de l'icône personnalisée
-    scaledSize: new google.maps.Size(32, 32), // Taille de l'icône
+    scaledSize: new google.maps.Size(60, 60), // Taille de l'icône
     origin: new google.maps.Point(0, 0), // Origine de l'icône (coin supérieur gauche)
     anchor: new google.maps.Point(16, 32) // Point d'ancrage de l'icône (centre inférieur)
   };
 
   // Créer et ajouter un marqueur pour l'origine
+  var lastLeg = (result.routes[0].legs.length) - 1;
+
   var startMarker = new google.maps.Marker({
       position: result.routes[0].legs[0].start_location,
       map: RoadIO.getMap(),
@@ -2202,7 +2004,7 @@ function addCustomMarkers(result) {
 
   // Créer et ajouter un marqueur pour la destination
   var endMarker = new google.maps.Marker({
-      position: result.routes[0].legs[0].end_location,
+      position: result.routes[0].legs[lastLeg].end_location,
       map: RoadIO.getMap(),
       icon: endSvg,
       title: 'Arrivée'
@@ -2262,7 +2064,7 @@ function addCustomMarkers(result) {
           try {
             const details = await roadClient.fetchLocationDetails(locationData)
             
-if (selectedLocation === locationData) {
+            if (selectedLocation === locationData) {
               closeSidebar();
               return;
             }
@@ -2503,14 +2305,18 @@ function reCalcIti(insufficientChargePoint, prevCharge, result, destinationCoord
                         console.log('ok');
                     }
                             
-                    var tempsRechargeArrondi = Math.round(tempsRecharge);
-                    var tarif = insufficientChargePoint.evses[0].connectors[0].tariff.elements[0].price_components[0].price;
-                    var tarifFoisHeure = tarif * plageRecharge;
-                    var currency = insufficientChargePoint.evses[0].connectors[0].tariff.currency;
-                    var tarifCurrency = formatCurrency(tarifFoisHeure * 1.21, {
-                      currency,
-                    })
-                    
+                    var tempsRechargeArrondi = Math.round(tempsRecharge);                    
+                    if(insufficientChargePoint.evses[0].connectors[0].tariff.elements){
+                      var tarif = insufficientChargePoint.evses[0].connectors[0].tariff.elements[0].price_components[0].price;
+                    } else {
+                      tarif = 0;
+                    }
+
+                    var tarifHoraire = tarif * 1.21; // Calculez le tarif horaire avec TVA
+                    var tempsRechargeEnHeures = tempsRecharge / 60; // Convertir le temps de recharge de minutes en heures
+                    var tarifTvaTemps = tarifHoraire * tempsRechargeEnHeures; // Calculer le tarif de recharge
+                    var tarifCurrency = tarifTvaTemps * plageRecharge;
+
                     // Créer un objet avec les informations de la borne
                     var powerKw = insufficientChargePoint.maxPower ? insufficientChargePoint.maxPower : "Non renseigné";
                     
@@ -2519,7 +2325,7 @@ function reCalcIti(insufficientChargePoint, prevCharge, result, destinationCoord
                         titre: insufficientChargePoint.name,
                         adresse: addressNotNull(insufficientChargePoint.address, insufficientChargePoint.city),
                         puissance: powerKw,
-                        prix: tarifCurrency
+                        prix: round(tarifCurrency, 2)
                     };
                     
                     // Vérifier si la nouvelle borne n'existe pas déjà dans le tableau
@@ -2574,7 +2380,7 @@ function reCalcIti(insufficientChargePoint, prevCharge, result, destinationCoord
                         bornesHTML += "<p><strong>Titre :</strong> " + borne.titre + "</p>";
                         bornesHTML += "<p><strong>Adresse :</strong> " + borne.adresse + "</p>";
                         bornesHTML += "<p><strong>Puissance :</strong> " + borne.puissance + " kW</p>";
-                        bornesHTML += "<p><strong>Estimation coût :</strong> " + borne.prix + "</p>";
+                        bornesHTML += "<p><strong>Estimation coût :</strong> " + borne.prix + "€</p>";
                         bornesHTML += "</div>";
                     });
                     bornesHTML += "</div>";
@@ -2833,7 +2639,9 @@ stationElements.forEach(function(element) {
   // génère le contenu HTML pour afficher les détails d'un emplacement dans une barre latérale
   function renderSidebar(location) {
     const facilities = formatLocationFacilities(location);
+    const sidebar = document.querySelector('.road-embed-map-sidebar');
 
+    sidebar.classList.remove('hidden');
     let content = [];
     content.push('<div style="padding-left: 1em; padding-right: 1em" class="sidebar-container">');
       content.push('<h3>');
@@ -3446,4 +3254,5 @@ stationElements.forEach(function(element) {
     errorMessage.style.display = 'block';
     errorMessage.style.opacity = 1;
   }
+  
 document.getElementById("calculer").addEventListener("click", () => calcRoute());
