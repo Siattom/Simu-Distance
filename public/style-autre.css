@@ -242,6 +242,11 @@
     height: 80vh;
 }
 
+.italicPetit {
+    font-style: italic;
+    font-size: 13px!important;
+}
+
 @media only screen and (max-device-width: 800px) {
 
     .compte-img img {
@@ -308,5 +313,9 @@
 
     .road-embed-map-sidebar {
         width: 60vh;
+    }
+
+    .italicPetit {
+        font-size: 20px!important;
     }
 }

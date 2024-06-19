@@ -2033,7 +2033,7 @@ function addCustomMarkers(result) {
 
       const latitude = marker.getPosition().lat();
       const longitude = marker.getPosition().lng()
-
+      
       const radiusInKm = 0.5;
       const { deltaLat, deltaLng } = kmToDegrees(radiusInKm, latitude);
     
@@ -2046,7 +2046,7 @@ function addCustomMarkers(result) {
           seLng: longitude + deltaLng,
           generation: 2
       };
-  
+      
       const location = {
         lat: marker.getPosition().lat(),
         lng: marker.getPosition().lng()
@@ -2058,12 +2058,28 @@ function addCustomMarkers(result) {
   
         // Si les détails sont récupérés avec succès, appelez renderSidebarPerso
         if (data) {
-
-          const locationData = data.locations[0].position;
+          
+          var locationData;
+          if(data.locations != null){
+            locationData = data.locations[0].position;
+          } else {
+            locationData = "45";
+          }
           
           try {
-            const details = await roadClient.fetchLocationDetails(locationData)
-            
+            var details; 
+
+            if(locationData != 45){
+              details = await roadClient.fetchLocationDetails(locationData)
+            } else {
+              details = {
+                name: 'Nous sommes désolés, les informations de cette borne de recharge ne sont pas disponibles.',
+                status: 'Non communiqué',
+                address: 'Non communiqué',
+                city: ''
+              };
+            }
+
             if (selectedLocation === locationData) {
               closeSidebar();
               return;
@@ -2071,7 +2087,6 @@ function addCustomMarkers(result) {
       
             let res;
               res = details;
-            
             // on request cancelation response is null
             if (!res) return;
 
@@ -2304,19 +2319,29 @@ function reCalcIti(insufficientChargePoint, prevCharge, result, destinationCoord
                     } else {
                         console.log('ok');
                     }
-                            
-                    var tempsRechargeArrondi = Math.round(tempsRecharge);                    
+                     
+                    var type;
+
                     if(insufficientChargePoint.evses[0].connectors[0].tariff.elements){
                       var tarif = insufficientChargePoint.evses[0].connectors[0].tariff.elements[0].price_components[0].price;
+                      type = insufficientChargePoint.evses[0].connectors[0].tariff.elements[0].price_components[0].type;
                     } else {
                       tarif = 0;
                     }
 
+                    var tempsRechargeArrondi = Math.round(tempsRecharge);                    
                     var tarifHoraire = tarif * 1.21; // Calculez le tarif horaire avec TVA
-                    var tempsRechargeEnHeures = tempsRecharge / 60; // Convertir le temps de recharge de minutes en heures
-                    var tarifTvaTemps = tarifHoraire * tempsRechargeEnHeures; // Calculer le tarif de recharge
-                    var tarifCurrency = tarifTvaTemps * plageRecharge;
-
+                    var tempsRechargeEnHeures = tempsRecharge / 60; // Convertir le temps de recharge de minutes en heures 
+                    var tarifCurrency = tarifHoraire * plageRecharge;
+                     
+                    if( type === 'ENERGY' ){
+                      tarifCurrency = tarif * plageRecharge;
+                      
+                    } else {
+                      tarifCurrency = tarif * tempsRechargeEnHeures; // Calculer le tarif de recharge 
+                      
+                    }
+                    
                     // Créer un objet avec les informations de la borne
                     var powerKw = insufficientChargePoint.maxPower ? insufficientChargePoint.maxPower : "Non renseigné";
                     
@@ -2380,7 +2405,12 @@ function reCalcIti(insufficientChargePoint, prevCharge, result, destinationCoord
                         bornesHTML += "<p><strong>Titre :</strong> " + borne.titre + "</p>";
                         bornesHTML += "<p><strong>Adresse :</strong> " + borne.adresse + "</p>";
                         bornesHTML += "<p><strong>Puissance :</strong> " + borne.puissance + " kW</p>";
-                        bornesHTML += "<p><strong>Estimation coût :</strong> " + borne.prix + "€</p>";
+                        if(borne.prix == 0){
+                          bornesHTML += "<p><strong>Estimation coût :</strong> Prix non communiqué</p>";
+                        } else {
+                          bornesHTML += "<p><strong>Estimation coût :</strong> " + borne.prix + "€</p>";
+                        }
+                        bornesHTML += "<p class='italicPetit'>Les coûts peuvent varier, leur exactitude peut varier en fonction du fournisseur.</p>";
                         bornesHTML += "</div>";
                     });
                     bornesHTML += "</div>";
@@ -2708,11 +2738,14 @@ stationElements.forEach(function(element) {
           content.push(...renderEvse(location, evse));
         }
       }
-      content.push('<div class="divider"></div>');
+    content.push('<div class="divider"></div>');
+    if(location.updatedAt){
       content.push(`<p>Dernière mise à jour <b>${location.updatedAt && new Date(location.updatedAt).toLocaleDateString('fr-FR')}</b> par <b>${sanitize(location.source)}</b></p>`); 
-      content.push('<div class="divider"></div>');
-
-    content.push(`<a class="directions" href="https://maps.google.com/maps?daddr=${location.geoLocation.coordinates[1]},${location.geoLocation.coordinates[0]}" target="_blank" style="margin: 0"><span>${carSvg} Directions</span></a>`);
+    }
+    content.push('<div class="divider"></div>');
+    if(location.geoLocation){
+      content.push(`<a class="directions" href="https://maps.google.com/maps?daddr=${location.geoLocation.coordinates[1]},${location.geoLocation.coordinates[0]}" target="_blank" style="margin: 0"><span>${carSvg} Directions</span></a>`);
+    }
     content.push('</div>');
     content.push('<div class="divider"></div>');
     return content.join(' ');
@@ -2774,6 +2807,16 @@ stationElements.forEach(function(element) {
     if (status === 'UNKNOWN') return 'grey';
     return undefined;
   };
+
+  // ajoute une majuscule au début de chaque mot et met en minuscule le reste du mot
+  function titleize(str) {
+    return str
+      .toLowerCase()
+      .replace('_', ' ')
+      .split(' ')
+      .map((word) => startCase(word))
+      .join(' ');
+  }
 
   // associe un label a une couleur
   function labelForStatus(status) {
