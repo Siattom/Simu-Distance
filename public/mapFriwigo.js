@@ -2034,7 +2034,7 @@ function addCustomMarkers(result) {
       const latitude = marker.getPosition().lat();
       const longitude = marker.getPosition().lng()
       
-      const radiusInKm = 0.5;
+      const radiusInKm = 0.1;
       const { deltaLat, deltaLng } = kmToDegrees(radiusInKm, latitude);
     
       // Ajuster les paramètres pour un périmètre de 20 km
@@ -2670,7 +2670,6 @@ stationElements.forEach(function(element) {
   function renderSidebar(location) {
     const facilities = formatLocationFacilities(location);
     const sidebar = document.querySelector('.road-embed-map-sidebar');
-
     sidebar.classList.remove('hidden');
     let content = [];
     content.push('<div style="padding-left: 1em; padding-right: 1em" class="sidebar-container">');
