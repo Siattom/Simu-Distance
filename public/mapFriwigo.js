@@ -3,7 +3,7 @@ const RoadIO = (function() {
   const initialPosition = { lat: 52.36388108888907, lng: 4.876605157366489 };
   //const userToken = "741131bb-88ac-5471-898c-1a978d0c8563";
   const userToken = "123456";
-  const googleApiKey = "AIzaSyBZeMfqzI4a7F3nsoRrGOWGXQC_qAOzshY";
+  const googleApiKey = "AIzaSyCHKZ2EUvq0Auxg6utOCuO_40eesyG2MNc";
   const baseUrl = "https://map.road.io";
   const clusterMarkers = {};
   const locationMarkers = {};
@@ -2234,7 +2234,7 @@ function reCalcIti(insufficientChargePoint, prevCharge, result, destinationCoord
   // Exemple de requête à l'API Geocoding
   var lat = insufficientChargePoint.geoLocation.coordinates[1];
   var lng = insufficientChargePoint.geoLocation.coordinates[0];
-  var apiKey = 'AIzaSyBZeMfqzI4a7F3nsoRrGOWGXQC_qAOzshY';
+  var apiKey = 'AIzaSyCHKZ2EUvq0Auxg6utOCuO_40eesyG2MNc';
 
   // Construction de l'URL de requête
   var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;

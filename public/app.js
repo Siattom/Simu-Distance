@@ -378,7 +378,7 @@
         // Exemple de requête à l'API Geocoding
         var lat = insufficientChargePoint.AddressInfo.Latitude
         var lng = insufficientChargePoint.AddressInfo.Longitude
-        var apiKey = 'AIzaSyBZeMfqzI4a7F3nsoRrGOWGXQC_qAOzshY';
+        var apiKey = 'AIzaSyCHKZ2EUvq0Auxg6utOCuO_40eesyG2MNc';
         
         // Construction de l'URL de requête
         var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;

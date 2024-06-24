@@ -42,7 +42,7 @@ position.addEventListener('click', function(){
         //console.log(`More or less ${crd.accuracy} meters.`);
 
         // Appel à l'API de géocodage
-        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${crd.latitude},${crd.longitude}&key=AIzaSyBZeMfqzI4a7F3nsoRrGOWGXQC_qAOzshY`)
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${crd.latitude},${crd.longitude}&key=AIzaSyCHKZ2EUvq0Auxg6utOCuO_40eesyG2MNc`)
             .then(response => response.json())
             .then(data => {
                 // Récupérer l'adresse à partir de la réponse de l'API
